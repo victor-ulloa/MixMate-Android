@@ -1,12 +1,16 @@
 package com.example.mixmate.ui.inventory
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.view.WindowManager
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import com.example.mixmate.R
 import com.example.mixmate.databinding.FragmentInventoryBinding
 
 class InventoryFragment : Fragment() {
@@ -22,18 +26,25 @@ class InventoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
+        val inventoryViewModel =
             ViewModelProvider(this).get(InventoryViewModel::class.java)
 
         _binding = FragmentInventoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val ingredientTypeConstraintLayout = binding.IngredientTypeConstraintLayout
 
-        val textView: TextView = binding.textInventory
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val openInventory = View.OnClickListener { view ->
+            Navigation.findNavController(view).navigate(R.id.action_inventory_to_edit_inventory)
         }
+
+        ingredientTypeConstraintLayout.children.forEach {
+            Log.d("In Inventory Fragment", resources.getResourceName(it.id))
+            it.setOnClickListener(openInventory)
+        }
+
         return root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
