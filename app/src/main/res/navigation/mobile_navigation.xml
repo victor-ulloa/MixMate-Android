@@ -15,7 +15,11 @@
         android:id="@+id/navigation_inventory"
         android:name="com.example.mixmate.ui.inventory.InventoryFragment"
         android:label="@string/title_inventory"
-        tools:layout="@layout/fragment_inventory" />
+        tools:layout="@layout/fragment_inventory">
+        <action
+            android:id="@+id/action_inventory_to_edit_inventory"
+            app:destination="@id/navigation_edit_inventory"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_recipes"
@@ -28,4 +32,16 @@
         android:name="com.example.mixmate.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_edit_inventory"
+        android:name="com.example.mixmate.ui.itemlist.EditInventoryFragment"
+        android:label="Edit Inventory"
+        tools:layout="@layout/fragment_edit_inventory">
+
+        <action
+            android:id="@+id/action_edit_inventory_to_inventory"
+            app:destination="@id/navigation_inventory"/>
+    </fragment>
+
 </navigation>
