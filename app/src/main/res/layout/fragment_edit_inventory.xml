@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/EditInventoryFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ingredientlist.EditInventoryFragment">
+    tools:context=".ui.itemlist.EditInventoryFragment">
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -19,10 +19,10 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView"
-            android:name="com.example.mixmate.ui.ingredientlist.IngredientListFragment"
+            android:name="com.example.mixmate.ui.itemlist.ItemListFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_ingredient_list" />
+            tools:layout="@layout/fragment_item_list" />
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

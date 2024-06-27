@@ -1,4 +1,4 @@
-package com.example.mixmate.ui.ingredientlist
+package com.example.mixmate.ui.itemlist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,7 +14,7 @@ import com.example.mixmate.ui.placeholder.PlaceholderContent
 /**
  * A fragment representing a list of Items.
  */
-class IngredientListFragment : Fragment() {
+class ItemListFragment : Fragment() {
 
     private var columnCount = 1
 
@@ -30,7 +30,7 @@ class IngredientListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_ingredient_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -39,7 +39,7 @@ class IngredientListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = IngredientListRecyclerViewAdapter(PlaceholderContent.ITEMS)
+                adapter = ItemListRecyclerViewAdapter(PlaceholderContent.ITEMS)
             }
         }
         return view
@@ -53,7 +53,7 @@ class IngredientListFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            IngredientListFragment().apply {
+            ItemListFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }

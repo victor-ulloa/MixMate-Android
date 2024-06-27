@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/IngredientTypeConstraintLayout"
+    android:id="@+id/ItemCategoryConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.inventory.InventoryFragment">
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/ingredientType1"
+            android:id="@+id/itemCategory1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:baselineAlignBottom="true"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/frameLayout1">
 
         <ImageView
-            android:id="@+id/ingredientType2"
+            android:id="@+id/itemCategory2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:baselineAlignBottom="true"
@@ -66,7 +66,7 @@
         app:layout_constraintTop_toBottomOf="@+id/FrameLayout2">
 
         <ImageView
-            android:id="@+id/ingredientType3"
+            android:id="@+id/itemCategory3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:baselineAlignBottom="true"
@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/FrameLayout3">
 
         <ImageView
-            android:id="@+id/ingredientType4"
+            android:id="@+id/itemCategory4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:baselineAlignBottom="true"
