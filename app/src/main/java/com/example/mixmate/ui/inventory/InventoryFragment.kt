@@ -30,13 +30,12 @@ class InventoryFragment : Fragment() {
 
         _binding = FragmentInventoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val ingredientTypeConstraintLayout = binding.ItemCategoryConstraintLayout
 
         val openInventory = View.OnClickListener { view ->
             Navigation.findNavController(view).navigate(R.id.action_inventory_to_edit_inventory)
         }
 
-        ingredientTypeConstraintLayout.children.forEach {
+        binding.ItemCategoryConstraintLayout.children.forEach {
             Log.d("In Inventory Fragment", resources.getResourceName(it.id))
             it.setOnClickListener(openInventory)
         }
