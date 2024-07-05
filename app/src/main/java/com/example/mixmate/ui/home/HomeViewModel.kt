@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mixmate.data.Cocktail
+import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.postgrest.from
 
 class HomeViewModel : ViewModel() {
-
-//    private val _text = MutableLiveData<String>().apply {
-//        value = "This is home Fragment"
-//    }
-//    val text: LiveData<String> = _text
 
     val allCocktails : Array<Cocktail> = arrayOf(
         Cocktail(2, "Frozen Margarita","Frozen Margarita Description","Frozen Margarita", "https://images.pexels.com/photos/7809757/pexels-photo-7809757.jpeg"),
@@ -31,5 +29,16 @@ class HomeViewModel : ViewModel() {
 
     fun changeId(value : Int) {
         _clickedViewId.value = value
+    }
+
+    val supabase = createSupabaseClient(
+        supabaseUrl = "https://npcddrdidmrwljkyxolk.supabase.co",
+        supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wY2RkcmRpZG1yd2xqa3l4b2xrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgwNjU5NjQsImV4cCI6MjAzMzY0MTk2NH0.8G-WTrEcsepVzH6wb3_6t4B4DWPG0PzycfB_M0cpoJU"
+    ) {
+        install(Postgrest)
+    }
+
+    suspend fun getAllCocktail() : List<Cocktail>{
+        return supabase.from("cocktails").select().decodeList<Cocktail>()
     }
 }

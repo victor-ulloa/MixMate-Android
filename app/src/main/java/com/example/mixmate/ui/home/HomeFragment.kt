@@ -51,8 +51,12 @@ class HomeFragment : Fragment() {
 //            textView.text = it
 //        }
 
+
         // load pictures
         viewLifecycleOwner.lifecycleScope.launch {
+            val test = homeViewModel.getAllCocktail()
+            Log.d("database test", test.size.toString() + " items retrieved")
+
             Picasso.get()
                 .load(homeViewModel.allCocktails[0].imageURL)
                 .resize(0,800)
