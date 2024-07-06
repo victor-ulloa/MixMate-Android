@@ -9,10 +9,14 @@ import android.widget.TextView
 import com.example.mixmate.data.Cocktail
 
 import com.example.mixmate.databinding.FragmentRecipeBinding
+import com.example.mixmate.listeners.RecipeListOnClickListener
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class RecipeRecyclerViewAdapter(private val values: List<Cocktail>)
-    : RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder>() {
+class RecipeRecyclerViewAdapter(private val values: List<Cocktail>,
+    val recipeListOnClickListener: RecipeListOnClickListener)
+    : RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -23,7 +27,6 @@ class RecipeRecyclerViewAdapter(private val values: List<Cocktail>)
                 false
             )
         )
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -31,17 +34,23 @@ class RecipeRecyclerViewAdapter(private val values: List<Cocktail>)
         holder.recipeView.tag = item.id
         holder.recipeIdView.text = item.id.toString()
         holder.recipeNameView.text = item.name
-
-        holder.recipeView.setOnClickListener { TODO("Not yet implemented") }
-
-        Picasso.get()
-            .load(item.imageURL)
-            .into(holder.recipeImageView)
+        runBlocking {
+            launch {
+                Picasso.get()
+                    .load(item.imageURL)
+                    .resize(0,200)
+                    .centerCrop()
+                    .into(holder.recipeImageView)
+            }
+        }
+        holder.binding.root.setOnClickListener{
+            recipeListOnClickListener.onListItemClick(it, item)
+        }
     }
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: FragmentRecipeBinding) :
+    inner class ViewHolder(val binding: FragmentRecipeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val recipeIdView : TextView = binding.id
         val recipeNameView : TextView = binding.name

@@ -5,6 +5,7 @@
     android:id="@+id/recipeDetailConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="20dp"
     tools:context=".ui.recipeDetail.RecipeDetailFragment">
 
     <ImageView
@@ -12,18 +13,21 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginVertical="20dp"
+        android:src="@color/light_blue_600"
         app:layout_constraintBottom_toTopOf="@+id/cocktailNameText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@color/light_blue_600" />
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/cocktailNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="20dp"
         android:text="TextView"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/shortDescText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -36,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="20dp"
         android:text="TextView"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/cocktailImageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

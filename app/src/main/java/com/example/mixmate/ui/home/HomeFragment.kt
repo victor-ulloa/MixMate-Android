@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 
 import androidx.fragment.app.Fragment
@@ -45,11 +46,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // load pictures
         viewLifecycleOwner.lifecycleScope.launch {
-//            homeViewModel.getAllCocktails()
-//            Log.d("database connection", homeViewModel.allCocktails.value?.size.toString()  + " items retrieved")
-
             Picasso.get()
                 .load(homeViewModel.allCocktailsLocal[0].imageURL)
                 .resize(0,800)
@@ -88,13 +85,16 @@ class HomeFragment : Fragment() {
         for (i in recipesViewIds.indices) {
             val imageView = view.findViewById<ImageView>(recipesViewIds[i])
             imageView.setOnClickListener { thisView ->
-                homeViewModel.changeId(recipesViewIds.indexOf(thisView.id))
-                Log.d("HomeFragment communication", "clicked on view id " + thisView.id)
-                Log.d("HomeFragment communication", "clicked on index " + homeViewModel.clickedViewId.value)
 
-                if (homeViewModel.clickedViewId.value != null) {
-                    Navigation.findNavController(view).navigate(R.id.action_home_to_recipe_detail)
-                }
+                val clickedCocktail = homeViewModel.allCocktailsLocal[recipesViewIds.indexOf(thisView.id)]
+
+                val bundle = bundleOf(
+                    Pair("URL", clickedCocktail.imageURL),
+                    Pair("NAME", clickedCocktail.name),
+                    Pair("DESC", clickedCocktail.shortDescription)
+                )
+
+                Navigation.findNavController(view).navigate(R.id.action_home_to_recipe_detail, bundle)
             }
         }
     }

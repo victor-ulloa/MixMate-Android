@@ -9,6 +9,15 @@ import io.github.jan.supabase.postgrest.from
 
 class CocktailRepository {
 
+    companion object cocktailsTable {
+        val tableName = "cocktails"
+        val columnId = "id"
+        val columnName = "name"
+        val columnShortDesc = "shortDescription"
+        val columnImageName = "imageName"
+    }
+
+
     private val supabase = createSupabaseClient(
         supabaseUrl = "https://npcddrdidmrwljkyxolk.supabase.co",
         supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wY2RkcmRpZG1yd2xqa3l4b2xrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgwNjU5NjQsImV4cCI6MjAzMzY0MTk2NH0.8G-WTrEcsepVzH6wb3_6t4B4DWPG0PzycfB_M0cpoJU"
@@ -19,11 +28,11 @@ class CocktailRepository {
     private var _allCocktails = MutableLiveData<List<Cocktail>>().apply { emptyList<Cocktail>() }
     val allCocktails : LiveData<List<Cocktail>> = _allCocktails
     suspend fun getAllCocktails() {
-        _allCocktails.value = supabase.from("cocktails").select().decodeList<Cocktail>()
+        _allCocktails.value = supabase.from(tableName).select().decodeList<Cocktail>()
     }
 
     suspend fun returnAllCocktails() : List<Cocktail>{
-        return supabase.from("cocktails").select().decodeList<Cocktail>()
+        return supabase.from(tableName).select().decodeList<Cocktail>()
     }
 
     private var _clickedViewId = MutableLiveData<Int>().apply { 0 }
@@ -32,5 +41,12 @@ class CocktailRepository {
         _clickedViewId.value = value
     }
 
+    suspend fun getCocktailsNameContains(text : String) : List<Cocktail>{
+        return supabase.from(tableName).select{
+            filter {
+                ilike(columnName, "%$text%")
+            }
+        }.decodeList<Cocktail>()
+    }
 
 }
