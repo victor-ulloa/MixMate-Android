@@ -24,7 +24,6 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var homeViewModel: HomeViewModel
 
     private val recipesViewIds = intArrayOf(
         R.id.featuredRecipeView,
@@ -42,23 +41,17 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-
-
         // load pictures
         viewLifecycleOwner.lifecycleScope.launch {
-            val test = homeViewModel.getAllCocktail()
-            Log.d("database test", test.size.toString() + " items retrieved")
+//            homeViewModel.getAllCocktails()
+//            Log.d("database connection", homeViewModel.allCocktails.value?.size.toString()  + " items retrieved")
 
             Picasso.get()
-                .load(homeViewModel.allCocktails[0].imageURL)
+                .load(homeViewModel.allCocktailsLocal[0].imageURL)
                 .resize(0,800)
                 .centerCrop()
                 .into(binding.featuredRecipeView)
@@ -67,7 +60,7 @@ class HomeFragment : Fragment() {
             binding.horizontalLinearLayout1.children.forEach {
                 val imageView = it as ImageView
                 Picasso.get()
-                    .load(homeViewModel.allCocktails[id].imageURL)
+                    .load(homeViewModel.allCocktailsLocal[id].imageURL)
                     .resize(150,200)
                     .centerCrop()
                     .into(imageView)
@@ -76,7 +69,7 @@ class HomeFragment : Fragment() {
             binding.horizontalLinearLayout2.children.forEach {
                 val imageView = it as ImageView
                 Picasso.get()
-                    .load(homeViewModel.allCocktails[id].imageURL)
+                    .load(homeViewModel.allCocktailsLocal[id].imageURL)
                     .resize(150,200)
                     .centerCrop()
                     .into(imageView)
@@ -90,7 +83,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
+        val homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
         for (i in recipesViewIds.indices) {
             val imageView = view.findViewById<ImageView>(recipesViewIds[i])

@@ -28,9 +28,9 @@
 
     <fragment
         android:id="@+id/navigation_recipes"
-        android:name="com.example.mixmate.ui.recipes.RecipesFragment"
+        android:name="com.example.mixmate.ui.recipes.ViewRecipesFragment"
         android:label="@string/title_recipes"
-        tools:layout="@layout/fragment_recipes" />
+        tools:layout="@layout/fragment_view_recipes" />
 
     <fragment
         android:id="@+id/navigation_profile"

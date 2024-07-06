@@ -37,7 +37,7 @@ class ItemListRecyclerViewAdapter(
 
     inner class ViewHolder(binding: FragmentItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val idView: TextView = binding.itemNumber
+        val idView: TextView = binding.id
         val contentView: TextView = binding.itemContent
 
         override fun toString(): String {

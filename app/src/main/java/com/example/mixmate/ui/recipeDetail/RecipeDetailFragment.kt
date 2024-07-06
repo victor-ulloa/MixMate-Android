@@ -37,7 +37,7 @@ class RecipeDetailFragment : Fragment() {
             Log.d(
                 "RecipeDetailFragment communication", "accessed Cocktail index is $index"
             )
-            val cocktail: Cocktail = homeViewModel.allCocktails[index]
+            val cocktail: Cocktail = homeViewModel.allCocktailsLocal[index]
 
             viewLifecycleOwner.lifecycleScope.launch {
                 Picasso.get()

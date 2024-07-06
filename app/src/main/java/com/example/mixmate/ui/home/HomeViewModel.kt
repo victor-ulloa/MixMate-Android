@@ -10,7 +10,7 @@ import io.github.jan.supabase.postgrest.from
 
 class HomeViewModel : ViewModel() {
 
-    val allCocktails : Array<Cocktail> = arrayOf(
+    val allCocktailsLocal : Array<Cocktail> = arrayOf(
         Cocktail(2, "Frozen Margarita","Frozen Margarita Description","Frozen Margarita", "https://images.pexels.com/photos/7809757/pexels-photo-7809757.jpeg"),
         Cocktail(1, "Whiskey Sour","Whiskey Sour Description","Whiskey Sour", "https://images.pexels.com/photos/6542662/pexels-photo-6542662.jpeg"),
         Cocktail(3, "Vodka Martini","Vodka Martini Description","Vodka Martini", "https://images.pexels.com/photos/4786625/pexels-photo-4786625.jpeg"),
@@ -26,7 +26,6 @@ class HomeViewModel : ViewModel() {
 
     private var _clickedViewId = MutableLiveData<Int>().apply { 0 }
     var clickedViewId : LiveData<Int> = _clickedViewId
-
     fun changeId(value : Int) {
         _clickedViewId.value = value
     }
@@ -37,8 +36,9 @@ class HomeViewModel : ViewModel() {
     ) {
         install(Postgrest)
     }
-
-    suspend fun getAllCocktail() : List<Cocktail>{
-        return supabase.from("cocktails").select().decodeList<Cocktail>()
+    private var _allCocktails = MutableLiveData<List<Cocktail>>().apply { emptyList<Cocktail>() }
+    val allCocktails : LiveData<List<Cocktail>> = _allCocktails
+    suspend fun getAllCocktails() {
+        _allCocktails.value = supabase.from("cocktails").select().decodeList<Cocktail>()
     }
 }
