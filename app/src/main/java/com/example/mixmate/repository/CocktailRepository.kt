@@ -25,20 +25,8 @@ class CocktailRepository {
         install(Postgrest)
     }
 
-    private var _allCocktails = MutableLiveData<List<Cocktail>>().apply { emptyList<Cocktail>() }
-    val allCocktails : LiveData<List<Cocktail>> = _allCocktails
-    suspend fun getAllCocktails() {
-        _allCocktails.value = supabase.from(tableName).select().decodeList<Cocktail>()
-    }
-
     suspend fun returnAllCocktails() : List<Cocktail>{
         return supabase.from(tableName).select().decodeList<Cocktail>()
-    }
-
-    private var _clickedViewId = MutableLiveData<Int>().apply { 0 }
-    var clickedViewId : LiveData<Int> = _clickedViewId
-    fun changeId(value : Int) {
-        _clickedViewId.value = value
     }
 
     suspend fun getCocktailsNameContains(text : String) : List<Cocktail>{

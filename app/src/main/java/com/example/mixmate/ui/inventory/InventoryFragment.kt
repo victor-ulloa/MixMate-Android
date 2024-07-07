@@ -3,8 +3,13 @@ package com.example.mixmate.ui.inventory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +35,17 @@ class InventoryFragment : Fragment() {
 
         _binding = FragmentInventoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val menuHost = activity as MenuHost
+        menuHost.addMenuProvider(object: MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return false
+            }
+        })
 
         val openInventory = View.OnClickListener { view ->
             Navigation.findNavController(view).navigate(R.id.action_inventory_to_edit_inventory)
