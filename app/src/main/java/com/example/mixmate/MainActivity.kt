@@ -36,10 +36,11 @@ class MainActivity : AppCompatActivity() {
         val destinationOnChangedListener = NavController.OnDestinationChangedListener {
                 _, destination, _ ->
             run {
-                if (destination.id == R.id.navigation_edit_inventory) {
-                    navView.visibility = View.GONE
-                } else {
-                    navView.visibility = View.VISIBLE
+                when (destination.id) {
+                    R.id.navigation_edit_inventory,
+                    R.id.navigation_recipe_detail,
+                                                    -> navView.visibility = View.GONE
+                    else -> navView.visibility = View.VISIBLE
                 }
             }
         }
