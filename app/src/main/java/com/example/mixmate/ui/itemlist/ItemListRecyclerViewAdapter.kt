@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.mixmate.databinding.FragmentItemBinding
-import com.example.mixmate.ui.placeholder.PlaceholderContent.PlaceholderItem
+import com.example.mixmate.ui.itemlist.placeholder.PlaceholderContent.PlaceholderItem
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].

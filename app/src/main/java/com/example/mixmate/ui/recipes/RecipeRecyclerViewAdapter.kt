@@ -1,5 +1,6 @@
 package com.example.mixmate.ui.recipes
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class RecipeRecyclerViewAdapter(private val values: List<Cocktail>,
+class RecipeRecyclerViewAdapter(val values: List<Cocktail>,
     val recipeListOnClickListener: RecipeListOnClickListener)
     : RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder>(){
 

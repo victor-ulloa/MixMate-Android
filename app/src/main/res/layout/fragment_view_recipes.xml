@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerView2"
+            android:id="@+id/recipe_recycler_view"
             android:name="com.example.mixmate.ui.recipes.RecipeFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
