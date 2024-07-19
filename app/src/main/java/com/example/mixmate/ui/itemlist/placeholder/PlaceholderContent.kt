@@ -1,4 +1,4 @@
-package com.example.mixmate.ui.placeholder
+package com.example.mixmate.ui.itemlist.placeholder
 
 import java.util.ArrayList
 import java.util.HashMap

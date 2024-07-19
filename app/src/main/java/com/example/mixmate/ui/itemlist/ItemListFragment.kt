@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.mixmate.R
-import com.example.mixmate.ui.placeholder.PlaceholderContent
+import com.example.mixmate.ui.itemlist.placeholder.PlaceholderContent
 
 /**
  * A fragment representing a list of Items.

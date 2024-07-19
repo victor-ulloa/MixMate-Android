@@ -16,6 +16,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -28,89 +29,87 @@ import kotlinx.coroutines.runBlocking
 class RecipeFragment : Fragment(), RecipeListOnClickListener {
 
     private val columnCount = 2
+    private val allData: MutableList<Cocktail> = emptyList<Cocktail>().toMutableList()
+    private val listener: RecipeListOnClickListener = this
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_recipe_list, container, false)
+        return inflater.inflate(R.layout.fragment_recipe_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerView = view as RecyclerView
         val recipeViewModel = ViewModelProvider(this)[RecipeViewModel::class.java]
-        val listener : RecipeListOnClickListener = this
 
         // retrieve data from db and display them
         viewLifecycleOwner.lifecycleScope.launch {
             val allRecipes = recipeViewModel.cocktailRepository.returnAllCocktails()
+            allData.clear()
+            allData.addAll(allRecipes)
 
             Log.d("view recipes","retrieved " + allRecipes.size + " items")
 
             // Set the adapter
-            if (view is RecyclerView) {
-                with(view) {
-                    layoutManager = when {
-                        columnCount <= 1 -> LinearLayoutManager(context)
-                        else -> GridLayoutManager(context, columnCount)
+            with(recyclerView) {
+                layoutManager = when {
+                    columnCount <= 1 -> LinearLayoutManager(context)
+                    else -> GridLayoutManager(context, columnCount)
+                }
+                adapter = RecipeRecyclerViewAdapter(allRecipes, listener)
+            }
+
+            // search view in menu bar
+            val menuHost = activity as MenuHost
+            menuHost.addMenuProvider(object: MenuProvider{
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menu.clear()
+                    menuInflater.inflate(R.menu. menu_search, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    if (menuItem.itemId == R.id.action_search){
+                        Log.d("recipe fragment w/ recycler view", "search menu clicked")
+                        val searchView = menuItem.actionView as SearchView
+                        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                            override fun onQueryTextSubmit(query: String?): Boolean {
+                                filter(recipeViewModel, query.toString())
+                                return false
+                            }
+
+                            override fun onQueryTextChange(newText: String?): Boolean {
+                                filter(recipeViewModel, newText.toString())
+                                return false
+                            }
+                        })
                     }
-                    adapter = RecipeRecyclerViewAdapter(allRecipes, listener)
+                    return false
+                }
+            })
+        }
+    }
+
+    fun filter(viewModel: RecipeViewModel, text: String){
+        Log.d("recipe fragment w/ recycler view","filter function called")
+
+        runBlocking {
+            launch {
+                val filtered = viewModel.cocktailRepository.getCocktailsNameContains(text)
+                with(recyclerView){
+                    adapter = RecipeRecyclerViewAdapter(filtered,listener)
                 }
             }
         }
+    }
 
-        // search view in menu bar
-        val menuHost = activity as MenuHost
-        menuHost.addMenuProvider(object: MenuProvider{
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_search, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                if (menuItem.itemId == R.id.action_search){
-                    val searchView = menuItem.actionView as SearchView
-                    searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-                        override fun onQueryTextSubmit(query: String?): Boolean {
-                            var querySuccess = false
-                            Log.d("search view in menu",query.toString())
-
-                            runBlocking {
-                                launch {
-                                    val filtered = recipeViewModel.cocktailRepository.getCocktailsNameContains(query.toString())
-                                    Log.d("search view in menu", "retrieved " + filtered.size + " items")
-                                    if (view is RecyclerView) {
-                                        with(view) {
-                                            adapter = RecipeRecyclerViewAdapter(filtered, listener)
-                                            querySuccess = true
-                                        }
-                                    }
-                                }
-                            }
-                            return querySuccess
-                        }
-
-                        override fun onQueryTextChange(newText: String?): Boolean {
-                            var querySuccess = false
-                            Log.d("search view in menu",newText.toString())
-
-                            runBlocking {
-                                launch {
-                                    val filtered = recipeViewModel.cocktailRepository.getCocktailsNameContains(newText.toString())
-                                    Log.d("search view in menu", "retrieved " + filtered.size + " items")
-
-                                    if (view is RecyclerView) {
-                                        with(view) {
-                                            adapter = RecipeRecyclerViewAdapter(filtered, listener)
-                                            querySuccess = true
-                                        }
-                                    }
-                                }
-                            }
-                            return querySuccess
-                        }
-                    })
-                    return true
-                }
-                return false
-            }
-        })
-        return view
+    override fun onResume() {
+        with(recyclerView){
+            adapter = RecipeRecyclerViewAdapter(allData,listener)
+        }
+        super.onResume()
     }
 
     override fun onListItemClick(view: View, cocktail: Cocktail) {
@@ -122,5 +121,4 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
 
         Navigation.findNavController(view).navigate(R.id.action_view_recipes_to_recipe_detail, bundle)
     }
-
 }
