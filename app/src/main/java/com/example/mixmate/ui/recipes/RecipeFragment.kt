@@ -77,15 +77,14 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
                         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                             override fun onQueryTextSubmit(query: String?): Boolean {
                                 filter(recipeViewModel, query.toString())
-                                return true
+                                return false
                             }
 
                             override fun onQueryTextChange(newText: String?): Boolean {
                                 filter(recipeViewModel, newText.toString())
-                                return true
+                                return false
                             }
                         })
-                        return true
                     }
                     return false
                 }
@@ -122,5 +121,4 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
 
         Navigation.findNavController(view).navigate(R.id.action_view_recipes_to_recipe_detail, bundle)
     }
-
 }
