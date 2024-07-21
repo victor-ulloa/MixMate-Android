@@ -39,9 +39,9 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.mixmate.ui.profile.ProfileFragment"
+        android:name="com.example.mixmate.ui.profile.SignUpFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_sign_up" />
 
     <fragment
         android:id="@+id/navigation_edit_inventory"
