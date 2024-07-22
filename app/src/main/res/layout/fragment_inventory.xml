@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ItemCategoryConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.inventory.InventoryFragment">
+
+    <FrameLayout
+        android:id="@+id/frameLayout1"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/FrameLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/itemCategory1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAlignBottom="true"
+            android:src="@color/purple_200" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|left"
+            android:text="Spirits" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/FrameLayout2"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/FrameLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout1">
+
+        <ImageView
+            android:id="@+id/itemCategory2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAlignBottom="true"
+            android:src="@color/purple_500" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|left"
+            android:text="Beer &amp; Wine"
+            android:textColor="@color/white" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/FrameLayout3"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/FrameLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FrameLayout2">
+
+        <ImageView
+            android:id="@+id/itemCategory3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAlignBottom="true"
+            android:src="@color/purple_700" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|left"
+            android:text="Syrup"
+            android:textColor="@color/white" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/FrameLayout4"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FrameLayout3">
+
+        <ImageView
+            android:id="@+id/itemCategory4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAlignBottom="true"
+            android:src="@color/teal_200" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|left"
+            android:text="Mixers" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

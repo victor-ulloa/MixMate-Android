@@ -7,13 +7,20 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_inventory"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
+        android:title="@string/title_inventory" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_recipes"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:title="@string/title_recipes" />
+
+    <!--note: will need to switch between sign up, log in and user detail -->
+    <!-- automatic conditional navigation: https://developer.android.com/guide/navigation/use-graph/conditional -->
+    <item
+        android:id="@+id/navigation_sign_up"
+        android:icon="@drawable/ic_android_black_24dp"
+        android:title="@string/title_profile" />
 
 </menu>
