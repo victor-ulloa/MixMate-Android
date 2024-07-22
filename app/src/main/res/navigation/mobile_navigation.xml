@@ -38,12 +38,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.example.mixmate.ui.profile.SignUpFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_sign_up" />
-
-    <fragment
         android:id="@+id/navigation_edit_inventory"
         android:name="com.example.mixmate.ui.itemlist.EditInventoryFragment"
         android:label="@string/title_edit_inventory"
@@ -57,4 +51,26 @@
         tools:layout="@layout/fragment_recipe_detail">
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_sign_up"
+        android:name="com.example.mixmate.ui.profile.SignUpFragment"
+        android:label="@string/sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_sign_up_to_log_in"
+            app:destination="@id/navigation_log_in"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_log_in"
+        android:name="com.example.mixmate.ui.profile.LogInFragment"
+        android:label="@string/log_in"
+        tools:layout="@layout/fragment_log_in"/>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.mixmate.ui.profile.SignUpFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile">
+    </fragment>
 </navigation>
