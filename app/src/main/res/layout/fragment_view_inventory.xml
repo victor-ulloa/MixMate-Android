@@ -18,7 +18,8 @@
             android:name="com.example.mixmate.ui.editInventory.AddedItemListFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_list_added_items" />
+            tools:layout="@layout/fragment_added_items_list" />
+
     </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -11,26 +11,17 @@ import android.view.ViewGroup
 import com.example.mixmate.R
 import com.example.mixmate.ui.editInventory.placeholder.PlaceholderContent
 
-/**
- * A fragment representing a list of Items.
- */
 class AddedItemListFragment : Fragment() {
 
     private var columnCount = 1
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_list_added_items, container, false)
+        val view = inflater.inflate(R.layout.fragment_added_items_list, container, false)
+
+
 
         // Set the adapter
         if (view is RecyclerView) {

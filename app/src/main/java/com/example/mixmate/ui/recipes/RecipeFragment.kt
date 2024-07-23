@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.mixmate.R
 import com.example.mixmate.data.Cocktail
+import com.example.mixmate.data.Constants
 import com.example.mixmate.listeners.RecipeListOnClickListener
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -104,9 +105,9 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
 
     override fun onListItemClick(view: View, cocktail: Cocktail) {
         val bundle = bundleOf(
-            Pair("URL", cocktail.imageURL),
-            Pair("NAME", cocktail.name),
-            Pair("DESC", cocktail.shortDescription)
+            Pair(Constants.URL, cocktail.imageURL),
+            Pair(Constants.NAME, cocktail.name),
+            Pair(Constants.DESC, cocktail.shortDescription)
         )
 
         Navigation.findNavController(view).navigate(R.id.action_view_recipes_to_recipe_detail, bundle)

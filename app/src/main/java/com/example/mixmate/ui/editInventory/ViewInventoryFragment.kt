@@ -11,12 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mixmate.R
-import com.example.mixmate.databinding.FragmentViewInventoryBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.example.mixmate.repository.Supabase
+import com.example.mixmate.ui.inventory.InventoryViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
 
@@ -29,16 +31,15 @@ class ModalBottomSheet(private val type: String): BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val supabase = Supabase() // ?
 
-        val viewModel = ViewInventoryViewModel()
+        // retrieve data and render recycler view
         viewLifecycleOwner.lifecycleScope.launch {
-            val data = viewModel.supabase.getInventoryItemsByType(type)
-
+            val data = supabase.getInventoryItemsByType(type)
             val recyclerView = view.findViewById<RecyclerView>(R.id.to_add_items_rv)
-
-            with (recyclerView){
+            with (recyclerView) {
                 layoutManager = LinearLayoutManager(context)
-                adapter= AddItemListRecyclerViewAdapter(data)
+                adapter = AddItemListRecyclerViewAdapter(data)
             }
         }
     }
@@ -51,19 +52,24 @@ class ModalBottomSheet(private val type: String): BottomSheetDialogFragment() {
 
 class ViewInventoryFragment : Fragment() {
 
-    private var _binding: FragmentViewInventoryBinding? = null
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentViewInventoryBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+
+        return inflater.inflate(R.layout.fragment_view_inventory, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val sharedModel = ViewModelProvider(requireActivity()).get(InventoryViewModel::class.java)
+        val viewModel = ViewInventoryViewModel(sharedModel)
 
         // add icon on top menu
-        val menuHost = activity as MenuHost
+        val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object: MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menu.clear()
@@ -72,20 +78,21 @@ class ViewInventoryFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 if (menuItem.itemId == R.id.action_add) {
-                    val selectedType = requireArguments().getString("TYPE")!!
+                    val selectedType =
+                        if (viewModel.getSelectedType() != null)
+                            viewModel.getSelectedType()!!.value
+                        else ""
 
-                    Log.d("In view inventory fragment", selectedType)
+                    if (selectedType != null) {
+                        Log.d("In view inventory fragment", selectedType)
+                        val bottomSheet = ModalBottomSheet(selectedType)
+                        bottomSheet.show(requireActivity().supportFragmentManager, ModalBottomSheet.TAG)
 
-                    val bottomSheet = ModalBottomSheet(selectedType)
-                    bottomSheet.show(activity!!.supportFragmentManager, ModalBottomSheet.TAG)
+                    }
+                    return true
                 }
                 return false
             }
-        })
-
-
-        return root
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
-
-
 }

@@ -32,8 +32,7 @@ class InventoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val inventoryViewModel =
-            ViewModelProvider(this)[InventoryViewModel::class.java]
+        val inventoryViewModel = ViewModelProvider(requireActivity()).get(InventoryViewModel::class.java)
 
         _binding = FragmentInventoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -53,10 +52,8 @@ class InventoryFragment : Fragment() {
             val selectedType = it.tag.toString()
             Log.d("In Inventory Fragment", selectedType)
             it.setOnClickListener{
-                val bundle = bundleOf(
-                    Pair("TYPE", selectedType),
-                )
-                Navigation.findNavController(it).navigate(R.id.action_inventory_to_view_inventory, bundle)
+                inventoryViewModel.setSelectedType(it.tag.toString())
+                Navigation.findNavController(it).navigate(R.id.action_inventory_to_view_inventory)
             }
         }
 

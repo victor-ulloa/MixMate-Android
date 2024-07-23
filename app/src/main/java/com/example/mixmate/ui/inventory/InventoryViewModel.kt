@@ -7,6 +7,11 @@ import com.example.mixmate.data.Constants
 import com.example.mixmate.repository.Supabase
 
 class InventoryViewModel : ViewModel() {
-
-    val supabase = Supabase()
+    internal val selectedType = MutableLiveData<String>()
+    fun getSelectedType(): LiveData<String> {
+        return selectedType
+    }
+    fun setSelectedType(type:String) {
+        selectedType.value = type
+    }
 }

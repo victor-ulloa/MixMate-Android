@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.mixmate.data.Constants
 import com.example.mixmate.databinding.FragmentRecipeDetailBinding
 import com.example.mixmate.ui.home.HomeViewModel
 import com.squareup.picasso.Picasso
@@ -31,7 +32,7 @@ class RecipeDetailFragment : Fragment() {
 
         val root: View = binding.root
 
-        val menuHost = activity as MenuHost
+        val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object: MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menu.clear()
@@ -44,13 +45,13 @@ class RecipeDetailFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             Picasso.get()
-               .load(requireArguments().getString("URL"))
+               .load(requireArguments().getString(Constants.URL))
                .resize(600, 0)
                .centerCrop()
                .into(binding.cocktailImageView)
         }
-        binding.cocktailNameText.text = requireArguments().getString("NAME")
-        binding.shortDescText.text = requireArguments().getString("DESC")
+        binding.cocktailNameText.text = requireArguments().getString(Constants.NAME)
+        binding.shortDescText.text = requireArguments().getString(Constants.DESC)
 
         return root
     }
