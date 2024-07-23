@@ -1,108 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ItemCategoryConstraintLayout"
+    android:id="@+id/inventoryFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.inventory.InventoryFragment">
 
-    <FrameLayout
-        android:id="@+id/frameLayout1"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
-        app:layout_constraintBottom_toTopOf="@+id/FrameLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/itemCategory1"
+        <LinearLayout
+            android:id="@+id/itemCategoryLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:baselineAlignBottom="true"
-            android:src="@color/purple_200" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom|left"
-            android:text="Spirits" />
-    </FrameLayout>
+            <FrameLayout
+                android:id="@+id/frameLayout1"
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:layout_weight="1"
+                android:tag="@string/spirit">
 
-    <FrameLayout
-        android:id="@+id/FrameLayout2"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
-        app:layout_constraintBottom_toTopOf="@+id/FrameLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout1">
+                <ImageView
+                    android:id="@+id/itemCategory1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:baselineAlignBottom="true"
+                    android:src="@color/purple_200" />
 
-        <ImageView
-            android:id="@+id/itemCategory2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:baselineAlignBottom="true"
-            android:src="@color/purple_500" />
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom|left"
+                    android:text="@string/spirit" />
+            </FrameLayout>
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom|left"
-            android:text="Beer &amp; Wine"
-            android:textColor="@color/white" />
-    </FrameLayout>
+            <FrameLayout
+                android:id="@+id/FrameLayout2"
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:layout_weight="1"
+                android:tag="@string/bitters">
 
-    <FrameLayout
-        android:id="@+id/FrameLayout3"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
-        app:layout_constraintBottom_toTopOf="@+id/FrameLayout4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FrameLayout2">
+                <ImageView
+                    android:id="@+id/itemCategory2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:baselineAlignBottom="true"
+                    android:src="@color/purple_500" />
 
-        <ImageView
-            android:id="@+id/itemCategory3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:baselineAlignBottom="true"
-            android:src="@color/purple_700" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom|left"
+                    android:text="@string/bitters"
+                    android:textColor="@color/white" />
+            </FrameLayout>
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom|left"
-            android:text="Syrup"
-            android:textColor="@color/white" />
-    </FrameLayout>
+            <FrameLayout
+                android:id="@+id/FrameLayout3"
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:layout_weight="1"
+                android:tag="@string/syrup">
 
-    <FrameLayout
-        android:id="@+id/FrameLayout4"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FrameLayout3">
+                <ImageView
+                    android:id="@+id/itemCategory3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:baselineAlignBottom="true"
+                    android:src="@color/purple_700" />
 
-        <ImageView
-            android:id="@+id/itemCategory4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:baselineAlignBottom="true"
-            android:src="@color/teal_200" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom|left"
+                    android:text="@string/syrup"
+                    android:textColor="@color/white" />
+            </FrameLayout>
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom|left"
-            android:text="Mixers" />
-    </FrameLayout>
+            <FrameLayout
+                android:id="@+id/FrameLayout4"
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:tag="@string/juice">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/itemCategory4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:baselineAlignBottom="true"
+                    android:src="@color/teal_200" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom|left"
+                    android:text="@string/juice" />
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

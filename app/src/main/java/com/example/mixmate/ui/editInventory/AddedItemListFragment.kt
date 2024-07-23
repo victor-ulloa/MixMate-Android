@@ -1,4 +1,4 @@
-package com.example.mixmate.ui.itemlist
+package com.example.mixmate.ui.editInventory
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,12 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.mixmate.R
-import com.example.mixmate.ui.itemlist.placeholder.PlaceholderContent
+import com.example.mixmate.ui.editInventory.placeholder.PlaceholderContent
 
 /**
  * A fragment representing a list of Items.
  */
-class ItemListFragment : Fragment() {
+class AddedItemListFragment : Fragment() {
 
     private var columnCount = 1
 
@@ -30,7 +30,7 @@ class ItemListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_list_added_items, container, false)
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -39,7 +39,7 @@ class ItemListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = ItemListRecyclerViewAdapter(PlaceholderContent.ITEMS)
+                adapter = AddedItemListRecyclerViewAdapter(PlaceholderContent.ITEMS)
             }
         }
         return view
@@ -53,7 +53,7 @@ class ItemListFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            ItemListFragment().apply {
+            AddedItemListFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }

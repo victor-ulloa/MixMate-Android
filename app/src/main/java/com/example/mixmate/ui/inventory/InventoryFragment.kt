@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.children
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.mixmate.R
+import com.example.mixmate.data.Constants
 import com.example.mixmate.databinding.FragmentInventoryBinding
 
 class InventoryFragment : Fragment() {
@@ -47,13 +49,15 @@ class InventoryFragment : Fragment() {
             }
         })
 
-        val openInventory = View.OnClickListener { view ->
-            Navigation.findNavController(view).navigate(R.id.action_inventory_to_edit_inventory)
-        }
-
-        binding.ItemCategoryConstraintLayout.children.forEach {
-            Log.d("In Inventory Fragment", resources.getResourceName(it.id))
-            it.setOnClickListener(openInventory)
+        binding.itemCategoryLayout.children.forEach { it ->
+            val selectedType = it.tag.toString()
+            Log.d("In Inventory Fragment", selectedType)
+            it.setOnClickListener{
+                val bundle = bundleOf(
+                    Pair("TYPE", selectedType),
+                )
+                Navigation.findNavController(it).navigate(R.id.action_inventory_to_view_inventory, bundle)
+            }
         }
 
         return root
