@@ -16,7 +16,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -47,7 +46,7 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
 
         // retrieve data from db and display them
         viewLifecycleOwner.lifecycleScope.launch {
-            val allRecipes = recipeViewModel.cocktailRepository.returnAllCocktails()
+            val allRecipes = recipeViewModel.supabase.returnAllCocktails()
             allData.clear()
             allData.addAll(allRecipes)
 
@@ -93,23 +92,14 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
     }
 
     fun filter(viewModel: RecipeViewModel, text: String){
-        Log.d("recipe fragment w/ recycler view","filter function called")
-
         runBlocking {
             launch {
-                val filtered = viewModel.cocktailRepository.getCocktailsNameContains(text)
+                val filtered = viewModel.supabase.getCocktailsNameContains(text)
                 with(recyclerView){
                     adapter = RecipeRecyclerViewAdapter(filtered,listener)
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        with(recyclerView){
-            adapter = RecipeRecyclerViewAdapter(allData,listener)
-        }
-        super.onResume()
     }
 
     override fun onListItemClick(view: View, cocktail: Cocktail) {

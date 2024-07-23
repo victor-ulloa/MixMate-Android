@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.google.material)
     val supabase_version = "2.5.1"
     val ktor_version = "2.3.12"
     implementation(libs.androidx.core.ktx)

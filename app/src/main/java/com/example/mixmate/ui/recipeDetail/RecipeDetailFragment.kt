@@ -22,9 +22,6 @@ class RecipeDetailFragment : Fragment() {
     private var _binding: FragmentRecipeDetailBinding?=null
     private val binding get() = _binding!!
 
-
-    private lateinit var homeViewModel : HomeViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

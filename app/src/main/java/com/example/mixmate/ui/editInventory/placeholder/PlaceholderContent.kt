@@ -1,4 +1,4 @@
-package com.example.mixmate.ui.itemlist.placeholder
+package com.example.mixmate.ui.editInventory.placeholder
 
 import java.util.ArrayList
 import java.util.HashMap
@@ -21,7 +21,6 @@ object PlaceholderContent {
      */
     val ITEM_MAP: MutableMap<String, PlaceholderItem> = HashMap()
 
-    private val COUNT = 25
 
     init {
         // Add some sample items.
