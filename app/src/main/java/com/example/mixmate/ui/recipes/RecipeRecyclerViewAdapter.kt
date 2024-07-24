@@ -9,20 +9,21 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.mixmate.data.Cocktail
 
-import com.example.mixmate.databinding.FragmentRecipeBinding
+import com.example.mixmate.databinding.FragmentRecipeListItemBinding
 import com.example.mixmate.listeners.RecipeListOnClickListener
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class RecipeRecyclerViewAdapter(val values: List<Cocktail>,
-    val recipeListOnClickListener: RecipeListOnClickListener)
+class RecipeRecyclerViewAdapter(
+    private val values: List<Cocktail>,
+    private val recipeListOnClickListener: RecipeListOnClickListener)
     : RecyclerView.Adapter<RecipeRecyclerViewAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentRecipeBinding.inflate(
+            FragmentRecipeListItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -51,7 +52,7 @@ class RecipeRecyclerViewAdapter(val values: List<Cocktail>,
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(val binding: FragmentRecipeBinding) :
+    inner class ViewHolder(val binding: FragmentRecipeListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val recipeIdView : TextView = binding.id
         val recipeNameView : TextView = binding.name
