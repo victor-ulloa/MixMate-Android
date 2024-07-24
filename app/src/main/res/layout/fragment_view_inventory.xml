@@ -13,13 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerView"
-            android:name="com.example.mixmate.ui.editInventory.AddedItemListFragment"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/added_items_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_added_items_list" />
-
+            tools:listitem="@layout/fragment_item"/>
     </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

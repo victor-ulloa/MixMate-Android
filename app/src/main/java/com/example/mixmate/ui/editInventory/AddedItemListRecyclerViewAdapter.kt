@@ -4,15 +4,11 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.mixmate.data.InventoryItem
 import com.example.mixmate.databinding.FragmentItemBinding
-import com.example.mixmate.ui.editInventory.placeholder.PlaceholderContent.PlaceholderItem
 
-/**
- * [RecyclerView.Adapter] that can display a [PlaceholderItem].
- * TODO: Replace the implementation with code for your data type.
- */
 class AddedItemListRecyclerViewAdapter(
-    private val values: List<PlaceholderItem>
+    private val values: List<InventoryItem>
 ) : RecyclerView.Adapter<AddedItemListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,8 +25,8 @@ class AddedItemListRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        //holder.idView.text = item.id.toString()
+        holder.contentView.text = item.name
     }
 
     override fun getItemCount(): Int = values.size
