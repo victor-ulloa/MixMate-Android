@@ -43,6 +43,9 @@ android {
 
 dependencies {
     implementation(libs.google.material)
+    implementation(libs.gson)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.core)
     val supabase_version = "2.5.1"
     val ktor_version = "2.3.12"
     implementation(libs.androidx.core.ktx)
