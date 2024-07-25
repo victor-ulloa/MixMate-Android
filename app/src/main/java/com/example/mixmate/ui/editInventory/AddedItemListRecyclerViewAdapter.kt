@@ -8,7 +8,7 @@ import com.example.mixmate.data.InventoryItem
 import com.example.mixmate.databinding.FragmentItemBinding
 
 class AddedItemListRecyclerViewAdapter(
-    private val values: List<InventoryItem>
+    private val values: MutableList<InventoryItem>
 ) : RecyclerView.Adapter<AddedItemListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,12 +20,10 @@ class AddedItemListRecyclerViewAdapter(
                 false
             )
         )
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        //holder.idView.text = item.id.toString()
         holder.contentView.text = item.name
     }
 
@@ -33,7 +31,6 @@ class AddedItemListRecyclerViewAdapter(
 
     inner class ViewHolder(binding: FragmentItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val idView: TextView = binding.id
         val contentView: TextView = binding.itemContent
 
         override fun toString(): String {

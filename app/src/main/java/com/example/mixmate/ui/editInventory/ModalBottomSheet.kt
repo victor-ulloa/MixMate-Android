@@ -4,19 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mixmate.R
+import com.example.mixmate.data.InventoryItem
 import com.example.mixmate.listeners.InventoryItemOnClickListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.launch
 
-class ModalBottomSheet(private val type: String,
-                       private val viewModel: ViewInventoryViewModel,
-                       private val onClickListener: InventoryItemOnClickListener
-)
-    : BottomSheetDialogFragment() {
+class ModalBottomSheet(private val data: List<InventoryItem>,
+                       private val onClickListener: InventoryItemOnClickListener): BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,13 +24,10 @@ class ModalBottomSheet(private val type: String,
         super.onViewCreated(view, savedInstanceState)
 
         // retrieve data and render recycler view of to add items
-        viewLifecycleOwner.lifecycleScope.launch {
-            val data = viewModel.supabase.getInventoryItemsByType(type)
-            val recyclerView = view.findViewById<RecyclerView>(R.id.to_add_items_rv)
-            with (recyclerView) {
-                layoutManager = LinearLayoutManager(context)
-                adapter = AddItemListRecyclerViewAdapter(data, onClickListener)
-            }
+        val recyclerView = view.findViewById<RecyclerView>(R.id.to_add_items_rv)
+        with (recyclerView) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = AddItemListRecyclerViewAdapter(data, onClickListener)
         }
     }
 

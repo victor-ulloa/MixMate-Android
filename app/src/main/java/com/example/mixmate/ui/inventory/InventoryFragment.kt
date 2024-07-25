@@ -32,12 +32,12 @@ class InventoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val inventoryViewModel = ViewModelProvider(requireActivity()).get(InventoryViewModel::class.java)
+        val inventoryViewModel = ViewModelProvider(requireActivity())[InventoryViewModel::class.java]
 
         _binding = FragmentInventoryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val menuHost = activity as MenuHost
+        val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object: MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menu.clear()
@@ -48,18 +48,16 @@ class InventoryFragment : Fragment() {
             }
         })
 
-        binding.itemCategoryLayout.children.forEach { it ->
+        binding.itemCategoryLayout.children.forEach {
             val selectedType = it.tag.toString()
-            Log.d("In Inventory Fragment", selectedType)
             it.setOnClickListener{
-                inventoryViewModel.setSelectedType(it.tag.toString())
-                Navigation.findNavController(it).navigate(R.id.action_inventory_to_view_inventory)
+                inventoryViewModel.setSelectedType(selectedType)
+                Navigation.findNavController(root).navigate(R.id.action_inventory_to_view_inventory)
             }
         }
 
         return root
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
