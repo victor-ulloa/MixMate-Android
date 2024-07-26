@@ -88,19 +88,13 @@ class ViewInventoryFragment: Fragment(), InventoryItemOnClickListener {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 if (menuItem.itemId == R.id.action_add) {
-                    val selectedType =
-                        if (viewModel.getSelectedType() != null)
-                            viewModel.getSelectedType()!!.value
-                        else ""
-
-                    if (selectedType != null) {
-                        if (isAdded) {
-                            lifecycleScope.launch {
-                                val data = viewModel.supabase.getInventoryItemsByType(selectedType)
-                                Log.d("ViewInventoryFragment log", "retrieved ${data.count()} items for type $selectedType")
-                                val bottomSheet = ModalBottomSheet(data, onClickListener)
-                                bottomSheet.show(childFragmentManager, ModalBottomSheet.TAG)
-                            }
+                    val selectedType = viewModel.getSelectedType()!!.value!!
+                    if (isAdded) {
+                        lifecycleScope.launch {
+                            val data = viewModel.supabase.getInventoryItemsByType(selectedType)
+                            Log.d("ViewInventoryFragment log", "retrieved ${data.count()} items for type ${selectedType.name}")
+                            val bottomSheet = ModalBottomSheet(data, onClickListener)
+                            bottomSheet.show(childFragmentManager, ModalBottomSheet.TAG)
                         }
                     }
                 }

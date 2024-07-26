@@ -8,16 +8,10 @@
     android:orientation="vertical"
     tools:context=".ui.editInventory.ViewInventoryFragment">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/added_items_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/added_items_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/fragment_added_item"/>
-    </ScrollView>
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/fragment_added_item"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

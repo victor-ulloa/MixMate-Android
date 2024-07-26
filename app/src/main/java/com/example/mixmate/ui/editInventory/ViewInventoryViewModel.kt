@@ -23,24 +23,22 @@ import kotlinx.coroutines.launch
 class ViewInventoryViewModel(sharedViewModel: InventoryViewModel,
     private val dataStore: DataStore<Preferences>
 ): ViewModel() {
-    private var selectedType: LiveData<String>? = null
-
+    private var selectedType: LiveData<Constants.InventoryItemType>? = null
+    private val key: Preferences.Key<String>
+    private val savedData: Flow<String>
     val supabase = Supabase()
     private val gson = Gson()
 
     val addedItemsLD: MutableLiveData<MutableList<InventoryItem>> = MutableLiveData()
     private val listType = object: TypeToken<List<InventoryItem>>() {}.type
 
-    private val key = stringPreferencesKey(Constants.ITEMS)
-
-    private val savedData: Flow<String> = dataStore.data.map { preferences ->
-        Log.d("ViewInventoryViewModel log", "read p: $preferences")
-        preferences[key] ?: Constants.EMPTY_ARRAY_JSON
-    }
-
     init {
         addedItemsLD.value = emptyList<InventoryItem>().toMutableList()
         selectedType = sharedViewModel.selectedType
+        key = stringPreferencesKey("${Constants.ITEMS}_${selectedType?.value?.name}")
+        savedData = dataStore.data.map { preferences ->
+            preferences[key] ?: Constants.EMPTY_ARRAY_JSON
+        }
 
         viewModelScope.launch { loadData() }
     }
@@ -78,9 +76,7 @@ class ViewInventoryViewModel(sharedViewModel: InventoryViewModel,
             saveData()
         }
     }
-
-
-    fun getSelectedType(): LiveData<String>? {
+    fun getSelectedType(): LiveData<Constants.InventoryItemType>? {
         return selectedType
     }
     suspend fun saveData() {

@@ -39,10 +39,10 @@ class Supabase {
         }.decodeList<Cocktail>()
     }
 
-    suspend fun getInventoryItemsByType(type: String): List<InventoryItem> {
+    suspend fun getInventoryItemsByType(type: Constants.InventoryItemType): List<InventoryItem> {
         return supabase.from(inventoryListTable).select {
             filter {
-                eq(columnType, type)
+                eq(columnType, type.name)
             }
         }.decodeList<InventoryItem>()
     }
