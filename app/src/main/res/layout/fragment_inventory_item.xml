@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:fontFamily="sans-serif-black"
             android:gravity="center"
-            android:shadowColor="@color/black_overlay"
+            android:shadowColor="@color/black"
             android:shadowRadius="20"
             android:text="category"
             android:textColor="@color/white"

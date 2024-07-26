@@ -42,7 +42,7 @@ class InventoryRecyclerViewAdapter (
         val item = values[position]
 
         holder.frameLayout.tag = item.name
-        holder.textView.text = item.name
+        holder.textView.text = item.toString().uppercase()
         runBlocking {
             launch {
                 Picasso.get()

@@ -8,10 +8,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -54,8 +52,8 @@ class InventoryFragment : Fragment(), InventoryOnClickListener {
 
         val rv: RecyclerView = binding.inventoryRv
         with(rv){
-            layoutManager=LinearLayoutManager(context)
-            adapter=InventoryRecyclerViewAdapter(enumValues<Constants.InventoryItemType>(), onClickListener)
+            layoutManager = LinearLayoutManager(context)
+            adapter = InventoryRecyclerViewAdapter(enumValues<Constants.InventoryItemType>(), onClickListener)
         }
 
         return root
