@@ -13,5 +13,5 @@
         android:id="@+id/to_add_items_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/fragment_item2"/>
+        tools:listitem="@layout/fragment_to_add_item"/>
 </LinearLayout>

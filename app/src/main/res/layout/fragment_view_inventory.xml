@@ -17,7 +17,7 @@
             android:id="@+id/added_items_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/fragment_item"/>
+            tools:listitem="@layout/fragment_added_item"/>
     </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

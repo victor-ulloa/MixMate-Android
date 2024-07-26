@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.mixmate.data.InventoryItem
-import com.example.mixmate.databinding.FragmentItemBinding
+import com.example.mixmate.databinding.FragmentAddedItemBinding
 
 class AddedItemListRecyclerViewAdapter(
     private val values: MutableList<InventoryItem>
@@ -14,7 +14,7 @@ class AddedItemListRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentItemBinding.inflate(
+            FragmentAddedItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -29,7 +29,7 @@ class AddedItemListRecyclerViewAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: FragmentItemBinding) :
+    inner class ViewHolder(binding: FragmentAddedItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val contentView: TextView = binding.itemContent
 
