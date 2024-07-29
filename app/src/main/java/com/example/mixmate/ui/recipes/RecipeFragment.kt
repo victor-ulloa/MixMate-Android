@@ -105,8 +105,8 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
     override fun onListItemClick(view: View, cocktail: Cocktail) {
         val bundle = bundleOf(
             Pair(Constants.URL, cocktail.imageURL),
-            Pair(Constants.NAME, cocktail.name),
-            Pair(Constants.DESC, cocktail.shortDescription)
+            Pair(Constants.NAME,cocktail.name),
+            Pair(Constants.RECIPE_ID, cocktail.recipe.toString())
         )
 
         Navigation.findNavController(view).navigate(R.id.action_view_recipes_to_recipe_detail, bundle)

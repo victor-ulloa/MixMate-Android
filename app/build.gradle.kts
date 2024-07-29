@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.androidx.cardview)
     val supabase_version = "2.5.1"
     val ktor_version = "2.3.12"
     implementation(libs.androidx.core.ktx)

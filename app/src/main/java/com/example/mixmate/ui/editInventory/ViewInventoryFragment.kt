@@ -124,6 +124,5 @@ class ViewInventoryFragment: Fragment(), InventoryItemOnClickListener {
 
     override fun onListItemClick(item: InventoryItem) {
         viewModel.addItem(item)
-        //addedItemsRvAdapter.notifyItemInserted(viewModel.getList().lastIndex)
     }
 }
