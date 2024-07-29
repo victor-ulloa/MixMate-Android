@@ -12,6 +12,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.mixmate.R
 import com.example.mixmate.data.Constants
 import com.example.mixmate.databinding.FragmentRecipeDetailBinding
 import com.squareup.picasso.Picasso
@@ -21,6 +22,9 @@ class RecipeDetailFragment : Fragment() {
 
     private var _binding: FragmentRecipeDetailBinding?=null
     private val binding get() = _binding!!
+
+    private var ingredientsExpanded = true
+    private var stepsExpanded = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +61,28 @@ class RecipeDetailFragment : Fragment() {
                 currentString += "${ingredient.inventoryItem.name}: ${ingredient.amount} ${ingredient.unit}${Constants.NEW_LINE}"
                 binding.IngredientsDetailText.text = currentString
             }
+        }
+
+        binding.expandIngredientsIcon.setOnClickListener{
+            if (ingredientsExpanded) {
+                binding.expandIngredientsIcon.setImageResource(R.drawable.ic_expand_more)
+                binding.IngredientsDetailText.visibility = View.GONE
+            }else {
+                binding.expandIngredientsIcon.setImageResource(R.drawable.ic_expand_less)
+                binding.IngredientsDetailText.visibility = View.VISIBLE
+            }
+            ingredientsExpanded = !ingredientsExpanded
+        }
+        binding.expandStepsIcon.setOnClickListener{
+            if (stepsExpanded) {
+                binding.expandStepsIcon.setImageResource(R.drawable.ic_expand_more)
+                binding.stepsDetailtext.visibility = View.GONE
+
+            }else {
+                binding.expandStepsIcon.setImageResource(R.drawable.ic_expand_less)
+                binding.stepsDetailtext.visibility = View.VISIBLE
+            }
+            stepsExpanded = !stepsExpanded
         }
 
         val menuHost: MenuHost = requireActivity()
