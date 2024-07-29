@@ -29,7 +29,7 @@ class Supabase {
     }
 
     suspend fun getAllCocktails() : List<Cocktail>{
-        return supabase.from(cocktailsTable).select().decodeList<Cocktail>()
+        return supabase.from(cocktailsTable).select().decodeList<Cocktail>().sortedBy { cocktail -> cocktail.name }
     }
 
     suspend fun getCocktailsNameContains(text : String) : List<Cocktail>{
@@ -37,7 +37,7 @@ class Supabase {
             filter {
                 ilike(columnName, "%$text%")
             }
-        }.decodeList<Cocktail>()
+        }.decodeList<Cocktail>().sortedBy { cocktail -> cocktail.name }
     }
 
     suspend fun getInventoryItemsByType(type: Constants.InventoryItemType): List<InventoryItem> {

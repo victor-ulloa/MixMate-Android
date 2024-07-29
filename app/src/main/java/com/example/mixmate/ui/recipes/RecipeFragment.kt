@@ -23,8 +23,6 @@ import com.example.mixmate.R
 import com.example.mixmate.data.Cocktail
 import com.example.mixmate.data.Constants
 import com.example.mixmate.listeners.RecipeListOnClickListener
-import com.example.mixmate.ui.editInventory.ViewInventoryViewModel
-import com.example.mixmate.ui.editInventory.dataStore
 import kotlinx.coroutines.launch
 
 class RecipeFragment : Fragment(), RecipeListOnClickListener {
@@ -52,7 +50,7 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
         }
 
         // init recycler view
-        recyclerView = view.findViewById(R.id.recipes_rv)
+        recyclerView = view.findViewById(R.id.recipesRv)
         with(recyclerView){
             layoutManager = when {
                 columnCount <= 1 -> LinearLayoutManager(context)

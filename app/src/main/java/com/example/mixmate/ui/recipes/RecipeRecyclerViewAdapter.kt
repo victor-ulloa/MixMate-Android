@@ -45,7 +45,7 @@ class RecipeRecyclerViewAdapter(
                     .into(holder.recipeImageView)
             }
         }
-        holder.binding.root.setOnClickListener{
+        holder.recipeView.setOnClickListener{
             recipeListOnClickListener.onListItemClick(it, item)
         }
     }
