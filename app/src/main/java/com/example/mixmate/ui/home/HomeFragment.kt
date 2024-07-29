@@ -62,33 +62,33 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            Picasso.get()
-                .load(homeViewModel.allCocktailsLocal[0].imageURL)
-                .resize(0,800)
-                .centerCrop()
-                .into(binding.featuredRecipeView)
-
-            var id = 1
-            binding.horizontalLinearLayout1.children.forEach {
-                val imageView = it as ImageView
-                Picasso.get()
-                    .load(homeViewModel.allCocktailsLocal[id].imageURL)
-                    .resize(150,200)
-                    .centerCrop()
-                    .into(imageView)
-                id++
-            }
-            binding.horizontalLinearLayout2.children.forEach {
-                val imageView = it as ImageView
-                Picasso.get()
-                    .load(homeViewModel.allCocktailsLocal[id].imageURL)
-                    .resize(150,200)
-                    .centerCrop()
-                    .into(imageView)
-                id++
-            }
-        }
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            Picasso.get()
+//                .load(homeViewModel.allCocktailsLocal[0].imageURL)
+//                .resize(0,800)
+//                .centerCrop()
+//                .into(binding.featuredRecipeView)
+//
+//            var id = 1
+//            binding.horizontalLinearLayout1.children.forEach {
+//                val imageView = it as ImageView
+//                Picasso.get()
+//                    .load(homeViewModel.allCocktailsLocal[id].imageURL)
+//                    .resize(150,200)
+//                    .centerCrop()
+//                    .into(imageView)
+//                id++
+//            }
+//            binding.horizontalLinearLayout2.children.forEach {
+//                val imageView = it as ImageView
+//                Picasso.get()
+//                    .load(homeViewModel.allCocktailsLocal[id].imageURL)
+//                    .resize(150,200)
+//                    .centerCrop()
+//                    .into(imageView)
+//                id++
+//            }
+//        }
 
         return root
     }
@@ -98,21 +98,21 @@ class HomeFragment : Fragment() {
 
         val homeViewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
-        for (i in recipesViewIds.indices) {
-            val imageView = view.findViewById<ImageView>(recipesViewIds[i])
-            imageView.setOnClickListener { thisView ->
-
-                val clickedCocktail = homeViewModel.allCocktailsLocal[recipesViewIds.indexOf(thisView.id)]
-
-                val bundle = bundleOf(
-                    Pair("URL", clickedCocktail.imageURL),
-                    Pair("NAME", clickedCocktail.name),
-                    Pair("DESC", clickedCocktail.shortDescription)
-                )
-
-                Navigation.findNavController(view).navigate(R.id.action_home_to_recipe_detail, bundle)
-            }
-        }
+//        for (i in recipesViewIds.indices) {
+//            val imageView = view.findViewById<ImageView>(recipesViewIds[i])
+//            imageView.setOnClickListener { thisView ->
+//
+//                val clickedCocktail = homeViewModel.allCocktailsLocal[recipesViewIds.indexOf(thisView.id)]
+//
+//                val bundle = bundleOf(
+//                    Pair("URL", clickedCocktail.imageURL),
+//                    Pair("NAME", clickedCocktail.name),
+//                    Pair("DESC", clickedCocktail.shortDescription)
+//                )
+//
+//                Navigation.findNavController(view).navigate(R.id.action_home_to_recipe_detail, bundle)
+//            }
+//        }
     }
 
     override fun onDestroyView() {

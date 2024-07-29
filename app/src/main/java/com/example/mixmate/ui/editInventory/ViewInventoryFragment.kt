@@ -63,16 +63,20 @@ class ViewInventoryFragment: Fragment(), InventoryItemOnClickListener {
             adapter = addedItemsRvAdapter
         }
 
-        // adapter render update; remove item handles separately
+        // recycler view render update
         oldListCount = viewModel.getList().count()
         viewModel.addedItemsLD.observe(viewLifecycleOwner){ newList ->
-            Log.d("ViewInventoryFragment log", "${newList.count()} vs $oldListCount")
+            val newListCount = newList.count()
+            Log.d("ViewInventoryFragment log", "$newListCount vs $oldListCount")
 
             if (oldListCount == 0) { // first time render full list as the list was initialized to be empty
-                addedItemsRvAdapter.notifyItemRangeChanged(0, newList.count())
+                addedItemsRvAdapter.notifyItemRangeChanged(0, newListCount)
             }
             else if(newList.count() - oldListCount == 1) {
                 addedItemsRvAdapter.notifyItemInserted(newList.lastIndex)
+            }
+            else {
+                addedItemsRvAdapter.notifyDataSetChanged()
             }
 
             oldListCount = newList.count()
@@ -111,7 +115,6 @@ class ViewInventoryFragment: Fragment(), InventoryItemOnClickListener {
                 val position = viewHolder.bindingAdapterPosition
                 Log.d("ViewInventoryFragment log", "removing item at $position")
                 viewModel.removeItem(position)
-                addedItemsRvAdapter.notifyItemRemoved(position)
             }
         }
         // attach the ItemTouchHelper to the RecyclerView
@@ -121,6 +124,5 @@ class ViewInventoryFragment: Fragment(), InventoryItemOnClickListener {
 
     override fun onListItemClick(item: InventoryItem) {
         viewModel.addItem(item)
-        //addedItemsRvAdapter.notifyItemInserted(viewModel.getList().lastIndex)
     }
 }

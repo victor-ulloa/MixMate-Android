@@ -17,7 +17,7 @@ class RecipeViewModel : ViewModel() {
     }
 
     suspend fun loadAll(){
-        recipesLiveData.value = supabase.returnAllCocktails()
+        recipesLiveData.value = supabase.getAllCocktails()
     }
 
     suspend fun filter(keyword: String) {

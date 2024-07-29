@@ -20,6 +20,7 @@ materialVersion = "1.12.0"
 gson = "2.11.0"
 datastorePreferences = "1.1.1"
 datastorePreferencesCore = "1.1.1"
+cardview = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,6 +42,7 @@ google-material = { group = "com.google.android.material", name = "material", ve
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
 androidx-datastore-preferences-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastorePreferencesCore" }
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

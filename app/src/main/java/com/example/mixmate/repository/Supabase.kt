@@ -3,19 +3,20 @@ package com.example.mixmate.repository
 import com.example.mixmate.data.Cocktail
 import com.example.mixmate.data.Constants
 import com.example.mixmate.data.InventoryItem
+import com.example.mixmate.data.Recipe
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
+import java.util.UUID
 
 class Supabase {
 
-    companion object tables {
+    companion object {
         val cocktailsTable = "cocktails"
         val inventoryListTable = "inventoryList"
+        val recipesTable = "recipes"
         val columnId = "id"
         val columnName = "name"
-        val columnShortDesc = "shortDescription"
-        val columnImageName = "imageName"
         val columnType = "type"
     }
 
@@ -27,7 +28,7 @@ class Supabase {
         install(Postgrest)
     }
 
-    suspend fun returnAllCocktails() : List<Cocktail>{
+    suspend fun getAllCocktails() : List<Cocktail>{
         return supabase.from(cocktailsTable).select().decodeList<Cocktail>()
     }
 
@@ -47,4 +48,11 @@ class Supabase {
         }.decodeList<InventoryItem>()
     }
 
+    suspend fun getRecipeById(recipeId: String): Recipe {
+        return supabase.from(recipesTable).select {
+            filter {
+                eq(columnId, UUID.fromString(recipeId))
+            }
+        }.decodeList<Recipe>().first()
+    }
 }

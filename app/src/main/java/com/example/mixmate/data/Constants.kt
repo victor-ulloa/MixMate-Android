@@ -1,5 +1,12 @@
 package com.example.mixmate.data
 
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import java.util.UUID
+
 class Constants {
     enum class InventoryItemType {
         spirit {
@@ -50,8 +57,21 @@ class Constants {
 
         val URL = "URL"
         val NAME = "NAME"
-        val DESC = "DESC"
+        val RECIPE_ID = "RECIPE_ID"
 
+        val NEW_LINE = "\n"
         val EMPTY_ARRAY_JSON="[]"
+    }
+
+    object UUIDSerializer : KSerializer<UUID> {
+        override val descriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
+
+        override fun deserialize(decoder: Decoder): UUID {
+            return UUID.fromString(decoder.decodeString())
+        }
+
+        override fun serialize(encoder: Encoder, value: UUID) {
+            encoder.encodeString(value.toString())
+        }
     }
 }

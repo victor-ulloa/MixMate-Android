@@ -28,7 +28,7 @@ class AddItemListRecyclerViewAdapter(
         holder.contentView.text = item.name
 
         holder.binding.root.setOnClickListener{
-            onClickListener.onListItemClick(InventoryItem(item.name, item.type))
+            onClickListener.onListItemClick(InventoryItem(item.id, item.name, item.type))
         }
     }
 

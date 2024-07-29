@@ -1,10 +1,12 @@
 package com.example.mixmate.data
 
 import kotlinx.serialization.Serializable
+import java.util.UUID
 
 @Serializable
 data class InventoryItem(
-    //val id: Int,
+    @Serializable(with = Constants.UUIDSerializer::class)
+    val id: UUID,
     val name: String,
     val type: Constants.InventoryItemType,
 )
