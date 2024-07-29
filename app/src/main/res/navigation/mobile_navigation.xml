@@ -22,8 +22,8 @@
         android:label="@string/title_inventory"
         tools:layout="@layout/fragment_inventory">
         <action
-            android:id="@+id/action_inventory_to_edit_inventory"
-            app:destination="@id/navigation_edit_inventory"/>
+            android:id="@+id/action_inventory_to_view_inventory"
+            app:destination="@id/navigation_view_inventory"/>
     </fragment>
 
     <fragment
@@ -38,10 +38,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_edit_inventory"
-        android:name="com.example.mixmate.ui.itemlist.EditInventoryFragment"
-        android:label="@string/title_edit_inventory"
-        tools:layout="@layout/fragment_edit_inventory">
+        android:id="@+id/navigation_view_inventory"
+        android:name="com.example.mixmate.ui.editInventory.ViewInventoryFragment"
+        android:label="@string/title_view_inventory"
+        tools:layout="@layout/fragment_view_inventory">
     </fragment>
 
     <fragment

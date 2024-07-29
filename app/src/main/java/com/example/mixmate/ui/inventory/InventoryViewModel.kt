@@ -3,11 +3,14 @@ package com.example.mixmate.ui.inventory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.mixmate.data.Constants
 
 class InventoryViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is inventory Fragment"
+    internal val selectedType = MutableLiveData<Constants.InventoryItemType>()
+    fun getSelectedType(): LiveData<Constants.InventoryItemType> {
+        return selectedType
     }
-    val text: LiveData<String> = _text
+    fun setSelectedType(type: Constants.InventoryItemType) {
+        selectedType.value = type
+    }
 }

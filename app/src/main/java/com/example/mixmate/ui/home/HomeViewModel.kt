@@ -2,10 +2,10 @@ package com.example.mixmate.ui.home
 
 import androidx.lifecycle.ViewModel
 import com.example.mixmate.data.Cocktail
-import com.example.mixmate.repository.CocktailRepository
+import com.example.mixmate.repository.Supabase
 
 class HomeViewModel : ViewModel() {
-    val cocktailRepository = CocktailRepository
+    val supabase = Supabase
 
     val allCocktailsLocal : Array<Cocktail> = arrayOf(
         Cocktail(2, "Frozen Margarita","Frozen Margarita Description","Frozen Margarita", "https://images.pexels.com/photos/7809757/pexels-photo-7809757.jpeg"),

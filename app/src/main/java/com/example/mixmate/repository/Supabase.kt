@@ -1,20 +1,22 @@
 package com.example.mixmate.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.mixmate.data.Cocktail
+import com.example.mixmate.data.Constants
+import com.example.mixmate.data.InventoryItem
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
 
-class CocktailRepository {
+class Supabase {
 
-    companion object cocktailsTable {
-        val tableName = "cocktails"
+    companion object tables {
+        val cocktailsTable = "cocktails"
+        val inventoryListTable = "inventoryList"
         val columnId = "id"
         val columnName = "name"
         val columnShortDesc = "shortDescription"
         val columnImageName = "imageName"
+        val columnType = "type"
     }
 
 
@@ -26,15 +28,23 @@ class CocktailRepository {
     }
 
     suspend fun returnAllCocktails() : List<Cocktail>{
-        return supabase.from(tableName).select().decodeList<Cocktail>()
+        return supabase.from(cocktailsTable).select().decodeList<Cocktail>()
     }
 
     suspend fun getCocktailsNameContains(text : String) : List<Cocktail>{
-        return supabase.from(tableName).select{
+        return supabase.from(cocktailsTable).select{
             filter {
                 ilike(columnName, "%$text%")
             }
         }.decodeList<Cocktail>()
+    }
+
+    suspend fun getInventoryItemsByType(type: Constants.InventoryItemType): List<InventoryItem> {
+        return supabase.from(inventoryListTable).select {
+            filter {
+                eq(columnType, type.name)
+            }
+        }.decodeList<InventoryItem>()
     }
 
 }
