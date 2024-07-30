@@ -11,8 +11,8 @@ import com.example.mixmate.data.InventoryItem
 import com.example.mixmate.listeners.InventoryItemOnClickListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class ModalBottomSheet(private val data: List<InventoryItem>,
-                       private val onClickListener: InventoryItemOnClickListener): BottomSheetDialogFragment() {
+class ToAddItemsBottomSheet(private val data: List<InventoryItem>,
+                            private val onClickListener: InventoryItemOnClickListener): BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +32,6 @@ class ModalBottomSheet(private val data: List<InventoryItem>,
     }
 
     companion object {
-        const val TAG = "ModalBottomSheet"
+        const val TAG = "ToAddItemsBottomSheet"
     }
 }

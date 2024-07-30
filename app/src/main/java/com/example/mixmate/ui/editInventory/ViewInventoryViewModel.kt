@@ -26,7 +26,6 @@ class ViewInventoryViewModel(sharedViewModel: InventoryViewModel,
     private var selectedType: LiveData<Constants.InventoryItemType>? = null
     private val key: Preferences.Key<String>
     private val savedData: Flow<String>
-    val supabase = Supabase()
     private val gson = Gson()
 
     val addedItemsLD: MutableLiveData<MutableList<InventoryItem>> = MutableLiveData()

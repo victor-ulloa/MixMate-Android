@@ -4,11 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.mixmate.data.Cocktail
+import com.example.mixmate.data.Recipe
 import com.example.mixmate.repository.Supabase
 
 class RecipeViewModel : ViewModel() {
 
-    private val supabase = Supabase()
+
 
     val recipesLiveData: MutableLiveData<List<Cocktail>?> = MutableLiveData()
 
@@ -17,11 +18,11 @@ class RecipeViewModel : ViewModel() {
     }
 
     suspend fun loadAll(){
-        recipesLiveData.value = supabase.getAllCocktails()
+        recipesLiveData.value = Supabase.getAllCocktails()
     }
 
     suspend fun filter(keyword: String) {
-        recipesLiveData.value = supabase.getCocktailsNameContains(keyword)
+        recipesLiveData.value = Supabase.getCocktailsNameContains(keyword)
     }
 }
 

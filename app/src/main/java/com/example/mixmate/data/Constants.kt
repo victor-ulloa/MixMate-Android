@@ -51,6 +51,20 @@ class Constants {
         abstract fun getImageURL(): String
     }
 
+    enum class Tags {
+        nonAlcoholic {
+            override fun toString(): String {
+                return "non-alcoholic"
+            }
+        }, sweet, sour, bitter, cold, refreshing, carbonated
+        , dairyFree {
+            override fun toString(): String {
+                return "dairy-free"
+            }
+        }, fruits, spices, summer, coffee, classic, elegant, smooth, sophisticated, spicy, herbal
+        , juicy, vegan, tropical, frozen
+    }
+
     companion object {
         const val ITEMS = "ITEMS"
         const val SAVED_ITEMS = "saved_items"

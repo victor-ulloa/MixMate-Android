@@ -24,6 +24,7 @@ import com.example.mixmate.R
 import com.example.mixmate.data.Constants
 import com.example.mixmate.data.InventoryItem
 import com.example.mixmate.listeners.InventoryItemOnClickListener
+import com.example.mixmate.repository.Supabase
 import com.example.mixmate.ui.inventory.InventoryViewModel
 import kotlinx.coroutines.launch
 
@@ -95,10 +96,10 @@ class ViewInventoryFragment: Fragment(), InventoryItemOnClickListener {
                     val selectedType = viewModel.getSelectedType()!!.value!!
                     if (isAdded) {
                         lifecycleScope.launch {
-                            val data = viewModel.supabase.getInventoryItemsByType(selectedType)
+                            val data = Supabase.getInventoryItemsByType(selectedType)
                             Log.d("ViewInventoryFragment log", "retrieved ${data.count()} items for type ${selectedType.name}")
-                            val bottomSheet = ModalBottomSheet(data, onClickListener)
-                            bottomSheet.show(childFragmentManager, ModalBottomSheet.TAG)
+                            val bottomSheet = ToAddItemsBottomSheet(data, onClickListener)
+                            bottomSheet.show(childFragmentManager, ToAddItemsBottomSheet.TAG)
                         }
                     }
                 }
