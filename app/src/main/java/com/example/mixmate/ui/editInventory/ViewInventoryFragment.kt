@@ -1,6 +1,5 @@
 package com.example.mixmate.ui.editInventory
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,23 +11,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mixmate.R
-import com.example.mixmate.data.Constants
 import com.example.mixmate.data.InventoryItem
 import com.example.mixmate.listeners.InventoryItemOnClickListener
 import com.example.mixmate.repository.Supabase
+import com.example.mixmate.ui.home.dataStore
 import com.example.mixmate.ui.inventory.InventoryViewModel
 import kotlinx.coroutines.launch
-
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constants.SAVED_ITEMS)
 
 class ViewInventoryFragment: Fragment(), InventoryItemOnClickListener {
 

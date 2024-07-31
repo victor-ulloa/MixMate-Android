@@ -32,6 +32,7 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
 
     private lateinit var viewModel: RecipeViewModel
     private lateinit var recyclerView: RecyclerView
+    private val rvAdapter: RecipeRecyclerViewAdapter = RecipeRecyclerViewAdapter(emptyList<Cocktail>().toMutableList(), listener)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,13 +57,11 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
                 columnCount <= 1 -> LinearLayoutManager(context)
                 else -> GridLayoutManager(context, columnCount)
             }
-            adapter = RecipeRecyclerViewAdapter(emptyList(), listener)
+            adapter = rvAdapter
         }
 
         viewModel.recipesLiveData.observe(viewLifecycleOwner) { newList ->
-            val count = newList!!.count()
-            Log.d("RecipeFragment log","changed: $count")
-            recyclerView.adapter = RecipeRecyclerViewAdapter(newList, listener)
+            rvAdapter.setData(newList)
         }
 
         // search view in menu bar

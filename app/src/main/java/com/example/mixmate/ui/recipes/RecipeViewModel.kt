@@ -8,10 +8,7 @@ import com.example.mixmate.data.Recipe
 import com.example.mixmate.repository.Supabase
 
 class RecipeViewModel : ViewModel() {
-
-
-
-    val recipesLiveData: MutableLiveData<List<Cocktail>?> = MutableLiveData()
+    val recipesLiveData: MutableLiveData<List<Cocktail>> = MutableLiveData()
 
     init {
         recipesLiveData.value = emptyList()
