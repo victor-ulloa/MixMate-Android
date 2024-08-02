@@ -9,11 +9,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.core.view.children
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -48,46 +46,66 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
 
     private val listener: RecipeListOnClickListener = this
 
-    private val adapter1: RecipeCarouselRecyclerViewAdapter = RecipeCarouselRecyclerViewAdapter(emptyList<Cocktail>().toMutableList(), listener)
-    private val adapter2: RecipeCarouselRecyclerViewAdapter = RecipeCarouselRecyclerViewAdapter(emptyList<Cocktail>().toMutableList(), listener)
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var adapter1: RecipeCarouselRecyclerViewAdapter
+    private lateinit var adapter2: RecipeCarouselRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel = ViewModelProvider(this,
+        homeViewModel = ViewModelProvider(this,
             HomeViewModelFactory(requireContext().dataStore)
         )[HomeViewModel::class.java]
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        homeViewModel.listTitle1.value = "drinks for summer"
+        lifecycleScope.launch {
+            homeViewModel.setRecList1(Supabase.getCocktailsByTags(arrayListOf(Constants.Tags.summer)))
+        }
+        homeViewModel.listTitle2.value = "refreshing!"
+        lifecycleScope.launch {
+            homeViewModel.setRecList2(Supabase.getCocktailsByTags(arrayListOf(Constants.Tags.refreshing)))
+        }
+        adapter1 = RecipeCarouselRecyclerViewAdapter(homeViewModel.recList1.value!!, listener)
+        adapter2 = RecipeCarouselRecyclerViewAdapter(homeViewModel.recList2.value!!, listener)
+        homeViewModel.recList1.observe(viewLifecycleOwner) { newValue ->
+            adapter1.setData(newValue)
+        }
+        homeViewModel.recList2.observe(viewLifecycleOwner) { newValue ->
+            adapter2.setData(newValue)
+        }
+        homeViewModel.listTitle1.observe(viewLifecycleOwner) {newValue ->
+            binding.recipesListTitle1.text = newValue
+        }
+        homeViewModel.listTitle2.observe(viewLifecycleOwner) {newValue ->
+            binding.recipesListTitle2.text = newValue
+        }
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val listRv1 :RecyclerView = binding.recipesListRv1
         with(listRv1){
             layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             adapter = adapter1
         }
-        homeViewModel.recList1.observe(viewLifecycleOwner) { newValue ->
-            adapter1.setData(newValue)
-        }
-        lifecycleScope.launch {
-            homeViewModel.setRecList1(Supabase.getCocktailsByTags(arrayListOf(Constants.Tags.summer)))
-            binding.recipesListTitle1.text = "drinks for summer"
-        }
-
         val listRv2 :RecyclerView = binding.recipesListRv2
         with(listRv2){
             layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             adapter = adapter2
         }
-        homeViewModel.recList2.observe(viewLifecycleOwner) { newValue ->
-            adapter2.setData(newValue)
-        }
-        lifecycleScope.launch {
-            homeViewModel.setRecList2(Supabase.getCocktailsByTags(arrayListOf(Constants.Tags.refreshing)))
-            binding.recipesListTitle2.text = "refreshing!"
-        }
 
+        binding.generateRecommendationButton.setOnClickListener {
+//            if (homeViewModel.inventoryHasItems()) {
+//                Log.d("HomeFragment my log", "about to run getRecipesBasedOnAllInventory")
+//                lifecycleScope.launch {
+//                    homeViewModel.getRecipesBasedOnAllInventory()
+//                }
+//            }
+        }
 
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object: MenuProvider {
@@ -99,7 +117,7 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
                 return false
             }
         })
-        return root
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onListItemClick(view: View, cocktail: Cocktail) {

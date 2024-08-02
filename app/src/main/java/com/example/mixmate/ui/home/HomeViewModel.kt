@@ -17,42 +17,73 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class HomeViewModel(private val dataStore: DataStore<Preferences>): ViewModel() {
 
     private val gson = Gson()
-    val recList1: MutableLiveData<MutableList<Cocktail>> = MutableLiveData(arrayListOf())
-    fun setRecList1(newList: List<Cocktail>) {
-        recList1.value = newList.toMutableList()
-    }
-    fun addToRecList1(newList: List<Cocktail>){
-        recList1.value?.addAll(newList)
-    }
-    val recList2: MutableLiveData<MutableList<Cocktail>> = MutableLiveData(arrayListOf())
-    fun setRecList2(newList: List<Cocktail>) {
-        recList2.value = newList.toMutableList()
-    }
-    fun addToRecList2(newList: List<Cocktail>){
-        recList2.value?.addAll(newList)
-    }
     private val listType = object: TypeToken<List<InventoryItem>>() {}.type
-
-    private suspend fun getRecipesWithItemType(type: Constants.InventoryItemType): List<Cocktail> {
-        val key = stringPreferencesKey("${Constants.ITEMS}_${type.name}")
-        val savedData = dataStore.data.map { preferences ->
-            preferences[key] ?: Constants.EMPTY_ARRAY_JSON }
-        val itemList: MutableList<InventoryItem> = arrayListOf()
-        savedData.collect { value ->
-            itemList.addAll(gson.fromJson(value, listType))
-        }
-        val recList: MutableList<Cocktail> = arrayListOf()
-        for (item in itemList){
-            recList.addAll(Supabase.getCocktailsThatUseItem(item))
-        }
-
-        return recList
+    private val savedItems: MutableList<InventoryItem> = arrayListOf()
+    fun inventoryHasItems(): Boolean {
+        return savedItems.isNotEmpty()
     }
 
+    init {
+        viewModelScope.launch {
+            updateSavedItemsList()
+        }
+    }
+
+    val recList1: MutableLiveData<List<Cocktail>> = MutableLiveData(arrayListOf())
+    val listTitle1: MutableLiveData<String> = MutableLiveData("")
+    fun setRecList1(newList: List<Cocktail>) {
+        recList1.value = newList
+    }
+    val recList2: MutableLiveData<List<Cocktail>> = MutableLiveData(arrayListOf())
+    val listTitle2: MutableLiveData<String> = MutableLiveData("")
+    fun setRecList2(newList: List<Cocktail>) {
+        recList2.value = newList
+    }
+
+    suspend fun getRecipesBasedOnAllInventory() {
+        val recList: MutableList<Cocktail> = emptyList<Cocktail>().toMutableList()
+        runBlocking {
+            for (item in savedItems) {
+                val retrievedList = Supabase.getCocktailsThatUseItem(item)
+                for (recipe in retrievedList) {
+                    if (!recList.contains(recipe)){ recList.add(recipe) }
+                }
+            }
+        }
+        recList1.value = recList
+        listTitle1.value = "Based on your inventory"
+    }
+
+    private suspend fun updateSavedItemsList() {
+        savedItems.clear()
+        Log.d("HomeViewModel my log", "${enumValues<Constants.InventoryItemType>()}")
+        readDatabase(buildKeyList()).collect { value ->
+            savedItems.addAll(gson.fromJson(value, listType))
+        }
+    }
+
+    // NOTE: this doesn't work lol
+    private fun readDatabase(keys: List<Preferences. Key<String>>): Flow<String> {
+        var result = ""
+        return dataStore.data.map { preferences ->
+            for (key in keys) {
+                result += preferences[key] ?: Constants.EMPTY_ARRAY_JSON
+            }
+            result
+        }
+    }
+    private fun buildKeyList(): List<Preferences.Key<String>> {
+        val list: MutableList<Preferences.Key<String>> = arrayListOf()
+        for (type in enumValues<Constants.InventoryItemType>()) {
+            list.add(stringPreferencesKey("${Constants.ITEMS}_${type.name}"))
+        }
+        return list
+    }
 }
 
 class HomeViewModelFactory(private val dataStore: DataStore<Preferences>): ViewModelProvider.Factory {

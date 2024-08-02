@@ -20,9 +20,12 @@
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:layout_margin="10dp"
                 app:cardCornerRadius="20dp"
-                tools:layout_editor_absoluteX="10dp"
-                tools:layout_editor_absoluteY="10dp">
+                app:layout_constraintBottom_toTopOf="@+id/generateRecommendationLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/featuredRecipeView"
@@ -41,18 +44,41 @@
 
             </androidx.cardview.widget.CardView>
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/generateRecommendationLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/recipesListLayout1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+                <Button
+                    android:id="@+id/generateRecommendationButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="GENERATE RECOMMENDATION" />
+
+                <TextView
+                    android:id="@+id/generateResultText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/recipesListLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                tools:layout_editor_absoluteY="220dp">
+                app:layout_constraintBottom_toTopOf="@+id/recipesListLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView">
 
                 <TextView
                     android:id="@+id/recipesListTitle1"
@@ -72,7 +98,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                tools:layout_editor_absoluteY="1051dp">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recipesListLayout1">
 
                 <TextView
                     android:id="@+id/recipesListTitle2"

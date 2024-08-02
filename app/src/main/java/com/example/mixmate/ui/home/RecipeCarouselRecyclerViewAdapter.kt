@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class RecipeCarouselRecyclerViewAdapter(
-    private val values: MutableList<Cocktail>,
+    private var values: List<Cocktail>,
     private val recipeListOnClickListener: RecipeListOnClickListener)
     : RecyclerView.Adapter<RecipeCarouselRecyclerViewAdapter.ViewHolder>(){
 
@@ -53,19 +53,8 @@ class RecipeCarouselRecyclerViewAdapter(
     override fun getItemCount(): Int = values.size
 
     fun setData(data: List<Cocktail>){
-        values.clear()
-        values.addAll(data)
+        values = data
         notifyDataSetChanged()
-    }
-
-    fun addData(data: List<Cocktail>){
-        notifyItemRangeInserted(values.lastIndex, data.size)
-        values.addAll(data)
-    }
-
-    fun removeData(position: Int){
-        notifyItemRemoved(position)
-        values.removeAt(position)
     }
 
     inner class ViewHolder(val binding: FragmentRecipeCarouselItemBinding) :
