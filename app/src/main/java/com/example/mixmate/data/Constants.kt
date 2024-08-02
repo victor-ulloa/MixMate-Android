@@ -44,23 +44,37 @@ class Constants {
             }
         }, others {
             override fun getImageURL(): String {
-                return "https://npcddrdidmrwljkyxolk.supabase.co/storage/v1/object/public/Images/inventory/cocktail_and_shaker.jpg"
+                return "https://npcddrdidmrwljkyxolk.supabase.co/storage/v1/object/public/Images/inventory/others"
             }
         };
 
         abstract fun getImageURL(): String
     }
 
+    enum class Tags {
+        nonAlcoholic {
+            override fun toString(): String {
+                return "non-alcoholic"
+            }
+        }, sweet, sour, bitter, cold, refreshing, carbonated
+        , dairyFree {
+            override fun toString(): String {
+                return "dairy-free"
+            }
+        }, fruits, spices, summer, coffee, classic, elegant, smooth, sophisticated, spicy, herbal
+        , juicy, vegan, tropical, frozen
+    }
+
     companion object {
-        val ITEMS = "ITEMS"
-        val SAVED_ITEMS = "saved_items"
+        const val ITEMS = "ITEMS"
+        const val SAVED_ITEMS = "saved_items"
 
-        val URL = "URL"
-        val NAME = "NAME"
-        val RECIPE_ID = "RECIPE_ID"
+        const val URL = "URL"
+        const val NAME = "NAME"
+        const val RECIPE_ID = "RECIPE_ID"
 
-        val NEW_LINE = "\n"
-        val EMPTY_ARRAY_JSON="[]"
+        const val NEW_LINE = "\n"
+        const val EMPTY_ARRAY_JSON="[]"
     }
 
     object UUIDSerializer : KSerializer<UUID> {

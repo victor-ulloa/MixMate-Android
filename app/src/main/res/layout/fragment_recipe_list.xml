@@ -2,10 +2,11 @@
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/recipes_rv"
+    android:id="@+id/recipesRv"
     android:name="com.example.mixmate.ui.recipes.RecipesFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="60dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.recipes.RecipeFragment"
     tools:listitem="@layout/fragment_recipe_list_item" />

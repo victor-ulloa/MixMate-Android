@@ -10,11 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.mixmate.R
 import com.example.mixmate.data.Constants
+import com.example.mixmate.data.Recipe
 import com.example.mixmate.databinding.FragmentRecipeDetailBinding
+import com.example.mixmate.repository.Supabase
+import com.example.mixmate.ui.recipes.RecipeViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
@@ -35,7 +39,7 @@ class RecipeDetailFragment : Fragment() {
 
         val root: View = binding.root
 
-        val viewModel: RecipeDetailViewModel = ViewModelProvider(this)[RecipeDetailViewModel::class.java]
+        val sharedModel: RecipeViewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
 
         binding.nameTextView.text = requireArguments().getString(Constants.NAME)
 
@@ -50,7 +54,7 @@ class RecipeDetailFragment : Fragment() {
         val recipeId = requireArguments().getString(Constants.RECIPE_ID)!!
 
         viewLifecycleOwner.lifecycleScope.launch {
-            val recipe = viewModel.supabase.getRecipeById(recipeId)
+            val recipe = Supabase.getRecipeById(recipeId)
 
             binding.descriptionTextView.text = recipe.description
 
