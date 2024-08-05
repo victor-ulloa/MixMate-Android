@@ -27,6 +27,10 @@ import kotlinx.coroutines.launch
 
 class RecipeFragment : Fragment(), RecipeListOnClickListener {
 
+    companion object{
+        val LOG_TAG = "RecipeFragment log"
+    }
+
     private val columnCount = 2
     private val listener: RecipeListOnClickListener = this
 
@@ -44,10 +48,11 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this, RecipeViewModelFactory())[RecipeViewModel::class.java]
+        val viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
+
         lifecycleScope.launch {
             viewModel.loadAll()
-            Log.d("RecipeFragment log","all loaded: ${viewModel.recipesLiveData.value!!.count()}")
+            Log.d(LOG_TAG,"all loaded: ${viewModel.recipesLiveData.value!!.count()}")
         }
 
         // init recycler view
@@ -64,6 +69,13 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
             rvAdapter.setData(newList)
         }
 
+        viewModel.selectedTagsLiveData.observe(viewLifecycleOwner) {
+            Log.d(LOG_TAG, "selected tags changed")
+            lifecycleScope.launch {
+                viewModel.filterByTags()
+            }
+        }
+
         // search view in menu bar
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object: MenuProvider{
@@ -74,7 +86,7 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 if (menuItem.itemId == R.id.action_search){
-                    Log.d("recipe fragment w/ recycler view", "search menu clicked")
+                    Log.d(LOG_TAG, "search menu clicked")
                     val searchView = menuItem.actionView as SearchView
                     searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                         override fun onQueryTextSubmit(query: String?): Boolean {

@@ -38,6 +38,8 @@ class Supabase {
         }
 
         suspend fun getCocktailsByTags(tags: List<Constants.Tags>): List<Cocktail> {
+            val tagsStr: MutableList<String> = arrayListOf()
+            tags.forEach { tag -> tagsStr.add(tag.name) }
             val columns = Columns.raw("""
                 *, $recipesTable!inner (
                     $columnTags
@@ -47,7 +49,7 @@ class Supabase {
                 columns = columns
             ) {
                 filter {
-                    contains("$recipesTable.$columnTags", tags)
+                    contains("$recipesTable.$columnTags", tagsStr)
                 }
             }.decodeList<Cocktail>()
         }
