@@ -20,6 +20,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class HomeViewModel(private val dataStore: DataStore<Preferences>): ViewModel() {
+    companion object{
+        val LOG_TAG = "HomeViewModel log"
+    }
 
     private val gson = Gson()
     private val listType = object: TypeToken<List<InventoryItem>>() {}.type
@@ -28,9 +31,11 @@ class HomeViewModel(private val dataStore: DataStore<Preferences>): ViewModel() 
         return savedItems.isNotEmpty()
     }
 
+    val recipeOfTheDay: MutableLiveData<Cocktail> = MutableLiveData()
+
     init {
         viewModelScope.launch {
-            updateSavedItemsList()
+            recipeOfTheDay.value = Supabase.getRecipeOfTheDay()
         }
     }
 
@@ -61,13 +66,12 @@ class HomeViewModel(private val dataStore: DataStore<Preferences>): ViewModel() 
 
     private suspend fun updateSavedItemsList() {
         savedItems.clear()
-        Log.d("HomeViewModel my log", "${enumValues<Constants.InventoryItemType>()}")
+        Log.d(LOG_TAG, "${enumValues<Constants.InventoryItemType>()}")
         readDatabase(buildKeyList()).collect { value ->
             savedItems.addAll(gson.fromJson(value, listType))
         }
     }
 
-    // NOTE: this doesn't work lol
     private fun readDatabase(keys: List<Preferences. Key<String>>): Flow<String> {
         var result = ""
         return dataStore.data.map { preferences ->

@@ -37,6 +37,9 @@ import java.util.UUID
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constants.SAVED_ITEMS)
 
 class HomeFragment : Fragment(), RecipeListOnClickListener {
+    companion object{
+        val LOG_TAG = "HomeFragment log"
+    }
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -65,9 +68,9 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
         lifecycleScope.launch {
             homeViewModel.setRecList1(Supabase.getCocktailsByTags(arrayListOf(Constants.Tags.summer)))
         }
-        homeViewModel.listTitle2.value = "refreshing!"
+        homeViewModel.listTitle2.value = "alcohol free"
         lifecycleScope.launch {
-            homeViewModel.setRecList2(Supabase.getCocktailsByTags(arrayListOf(Constants.Tags.refreshing)))
+            homeViewModel.setRecList2(Supabase.getCocktailsByTags(arrayListOf(Constants.Tags.nonAlcoholic)))
         }
         adapter1 = RecipeCarouselRecyclerViewAdapter(homeViewModel.recList1.value!!, listener)
         adapter2 = RecipeCarouselRecyclerViewAdapter(homeViewModel.recList2.value!!, listener)
@@ -83,6 +86,21 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
         homeViewModel.listTitle2.observe(viewLifecycleOwner) {newValue ->
             binding.recipesListTitle2.text = newValue
         }
+
+        homeViewModel.recipeOfTheDay.observe(viewLifecycleOwner) { value ->
+            lifecycleScope.launch {
+                Picasso.get()
+                    .load(value.imageURL)
+                    .resize(0,200)
+                    .centerCrop()
+                    .into(binding.featuredRecipeView)
+            }
+            binding.featuredRecipeText.text = value.name
+            binding.featuredRecipeView.setOnClickListener {
+                onListItemClick(binding.featuredRecipeView, value)
+            }
+        }
+
         return root
     }
 
@@ -98,14 +116,14 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
             adapter = adapter2
         }
 
-        binding.generateRecommendationButton.setOnClickListener {
+//        binding.generateRecommendationButton.setOnClickListener {
 //            if (homeViewModel.inventoryHasItems()) {
 //                Log.d("HomeFragment my log", "about to run getRecipesBasedOnAllInventory")
 //                lifecycleScope.launch {
 //                    homeViewModel.getRecipesBasedOnAllInventory()
 //                }
 //            }
-        }
+//        }
 
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object: MenuProvider {

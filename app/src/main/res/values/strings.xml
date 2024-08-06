@@ -21,6 +21,5 @@
     <string name="bitters">bitters</string>
     <string name="syrup">syrup</string>
     <string name="juice">juice</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recipe_of_the_day">RECIPE OF THE DAY</string>
 </resources>

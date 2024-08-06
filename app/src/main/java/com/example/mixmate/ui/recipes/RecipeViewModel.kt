@@ -1,18 +1,31 @@
 package com.example.mixmate.ui.recipes
 
+import android.graphics.drawable.Drawable.ConstantState
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.mixmate.data.Cocktail
+import com.example.mixmate.data.Constants
 import com.example.mixmate.data.Recipe
 import com.example.mixmate.repository.Supabase
 
 class RecipeViewModel : ViewModel() {
-    val recipesLiveData: MutableLiveData<List<Cocktail>> = MutableLiveData()
 
-    init {
-        recipesLiveData.value = emptyList()
+    private val _selectedTags :MutableList<Constants.Tags> = arrayListOf()
+    val selectedTagsLiveData: MutableLiveData<MutableList<Constants.Tags>> = MutableLiveData()
+    fun selectedTagsContains(tag: Constants.Tags) :Boolean {
+        return _selectedTags.contains(tag)
     }
+    fun addTag(tag: Constants.Tags) {
+        _selectedTags.add(tag)
+        selectedTagsLiveData.value = _selectedTags
+    }
+    fun removeTag(tag: Constants.Tags) {
+        _selectedTags.remove(tag)
+        selectedTagsLiveData.value = _selectedTags
+    }
+
+    val recipesLiveData: MutableLiveData<List<Cocktail>> = MutableLiveData(arrayListOf())
 
     suspend fun loadAll(){
         recipesLiveData.value = Supabase.getAllCocktails()
@@ -21,14 +34,14 @@ class RecipeViewModel : ViewModel() {
     suspend fun filter(keyword: String) {
         recipesLiveData.value = Supabase.getCocktailsNameContains(keyword)
     }
-}
 
-class RecipeViewModelFactory : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(RecipeViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return RecipeViewModel() as T
+    suspend fun filterByTags() {
+        if (_selectedTags.isEmpty()) {
+            loadAll()
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        else {
+            recipesLiveData.value = Supabase.getCocktailsByTags(_selectedTags)
+        }
     }
+
 }
