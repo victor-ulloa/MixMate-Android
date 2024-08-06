@@ -31,10 +31,12 @@ class HomeViewModel(private val dataStore: DataStore<Preferences>): ViewModel() 
         return savedItems.isNotEmpty()
     }
 
+    val recipeOfTheDay: MutableLiveData<Cocktail> = MutableLiveData()
+
     init {
-//        viewModelScope.launch {
-//            updateSavedItemsList()
-//        }
+        viewModelScope.launch {
+            recipeOfTheDay.value = Supabase.getRecipeOfTheDay()
+        }
     }
 
     val recList1: MutableLiveData<List<Cocktail>> = MutableLiveData(arrayListOf())

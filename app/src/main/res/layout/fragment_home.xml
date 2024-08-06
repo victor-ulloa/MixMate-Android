@@ -16,6 +16,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/RecipeOfTheDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:text="@string/recipe_of_the_day"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/cardView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
@@ -25,22 +37,27 @@
                 app:layout_constraintBottom_toTopOf="@+id/generateRecommendationLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/RecipeOfTheDay">
 
                 <ImageView
                     android:id="@+id/featuredRecipeView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@color/black" />
+                    android:src="@color/white" />
 
                 <TextView
                     android:id="@+id/featuredRecipeText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/text_margin"
+                    android:background="@color/black_overlay"
                     android:gravity="center"
-                    android:text="TextView"
-                    android:textColor="@color/white" />
+                    android:text=""
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textColor="@color/white"
+                    android:textSize="22sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -49,6 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/recipesListLayout1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,6 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/recipesListLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +103,8 @@
                     android:id="@+id/recipesListTitle1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recipesListRv1"
@@ -98,6 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +128,8 @@
                     android:id="@+id/recipesListTitle2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recipesListRv2"
