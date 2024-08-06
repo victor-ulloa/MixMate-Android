@@ -48,7 +48,7 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[RecipeViewModel::class.java]
 
         lifecycleScope.launch {
             viewModel.loadAll()
@@ -105,7 +105,7 @@ class RecipeFragment : Fragment(), RecipeListOnClickListener {
         })
     }
 
-    fun filter(text: String){
+    fun filter(text: String) {
         lifecycleScope.launch {
             viewModel.filter(text)
         }
