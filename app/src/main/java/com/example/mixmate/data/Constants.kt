@@ -38,10 +38,6 @@ class Constants {
             override fun getImageURL(): String {
                 return "https://npcddrdidmrwljkyxolk.supabase.co/storage/v1/object/public/Images/inventory/herbsandspices"
             }
-
-            override fun toString(): String {
-                return "Herbs And Spices"
-            }
         }, others {
             override fun getImageURL(): String {
                 return "https://npcddrdidmrwljkyxolk.supabase.co/storage/v1/object/public/Images/inventory/others"

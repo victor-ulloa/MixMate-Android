@@ -1,6 +1,8 @@
 package com.example.mixmate.ui.home
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -15,11 +17,12 @@ import com.example.mixmate.repository.Supabase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class HomeViewModel(private val dataStore: DataStore<Preferences>): ViewModel() {
+class HomeViewModel(val context: Context): ViewModel() {
     companion object{
         val LOG_TAG = "HomeViewModel log"
     }
@@ -29,6 +32,9 @@ class HomeViewModel(private val dataStore: DataStore<Preferences>): ViewModel() 
     private val savedItems: MutableList<InventoryItem> = arrayListOf()
     fun inventoryHasItems(): Boolean {
         return savedItems.isNotEmpty()
+    }
+    fun getSavedItems(): MutableList<InventoryItem> {
+        return savedItems
     }
 
     val recipeOfTheDay: MutableLiveData<Cocktail> = MutableLiveData()
@@ -50,37 +56,53 @@ class HomeViewModel(private val dataStore: DataStore<Preferences>): ViewModel() 
         recList2.value = newList
     }
 
-    suspend fun getRecipesBasedOnAllInventory() {
+    fun getRecipesBasedOnAllInventory() {
         val recList: MutableList<Cocktail> = emptyList<Cocktail>().toMutableList()
-        runBlocking {
-            for (item in savedItems) {
-                val retrievedList = Supabase.getCocktailsThatUseItem(item)
-                for (recipe in retrievedList) {
-                    if (!recList.contains(recipe)){ recList.add(recipe) }
+        for (item in savedItems) {
+            viewModelScope.launch {
+                try {
+                    val retrievedList = Supabase.getCocktailsThatUseItem(item)
+                    Log.d(LOG_TAG, "for $item: retrieved $retrievedList")
+                    for (recipe in retrievedList) {
+                        if (!recList.contains(recipe)) {
+                            recList.add(recipe)
+                        }
+                    }
+                    Log.d(LOG_TAG, "$recList")
+                    recList1.value = recList
+                    listTitle1.value = "Based on your inventory"
+
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
-        recList1.value = recList
-        listTitle1.value = "Based on your inventory"
     }
 
-    private suspend fun updateSavedItemsList() {
+    suspend fun fetchSavedItems(context: Context) {
         savedItems.clear()
-        Log.d(LOG_TAG, "${enumValues<Constants.InventoryItemType>()}")
-        readDatabase(buildKeyList()).collect { value ->
-            savedItems.addAll(gson.fromJson(value, listType))
+        Log.d(LOG_TAG, "enum values: ${enumValues<Constants.InventoryItemType>()}")
+        val keyList = buildKeyList()
+        val preferencesValues = getPreferencesValues(context, keyList)
+
+        for (key in keyList) {
+            val retrievedValue :String = preferencesValues[key.toString()] ?: ""
+            Log.d(LOG_TAG, "$key, $retrievedValue")
+            if (retrievedValue.isNotEmpty()){
+                savedItems.addAll(gson.fromJson(retrievedValue, listType))
+            }
         }
     }
 
-    private fun readDatabase(keys: List<Preferences. Key<String>>): Flow<String> {
-        var result = ""
-        return dataStore.data.map { preferences ->
-            for (key in keys) {
-                result += preferences[key] ?: Constants.EMPTY_ARRAY_JSON
+    private suspend fun getPreferencesValues(context: Context, keys: List<Preferences. Key<String>>): Map<String, String?> {
+        val preferencesFlow = context.dataStore.data.map { preferences ->
+            keys.associate { key ->
+                key.name to preferences[key]
             }
-            result
         }
+        return preferencesFlow.first()
     }
+
     private fun buildKeyList(): List<Preferences.Key<String>> {
         val list: MutableList<Preferences.Key<String>> = arrayListOf()
         for (type in enumValues<Constants.InventoryItemType>()) {
@@ -90,12 +112,12 @@ class HomeViewModel(private val dataStore: DataStore<Preferences>): ViewModel() 
     }
 }
 
-class HomeViewModelFactory(private val dataStore: DataStore<Preferences>): ViewModelProvider.Factory {
+class HomeViewModelFactory(private val context: Context): ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return HomeViewModel(dataStore) as T
+            return HomeViewModel(context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

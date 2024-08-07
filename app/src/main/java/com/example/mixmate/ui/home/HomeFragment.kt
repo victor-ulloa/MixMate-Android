@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -59,7 +60,7 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
         savedInstanceState: Bundle?
     ): View {
         homeViewModel = ViewModelProvider(this,
-            HomeViewModelFactory(requireContext().dataStore)
+            HomeViewModelFactory(requireContext())
         )[HomeViewModel::class.java]
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -116,14 +117,14 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
             adapter = adapter2
         }
 
-//        binding.generateRecommendationButton.setOnClickListener {
-//            if (homeViewModel.inventoryHasItems()) {
-//                Log.d("HomeFragment my log", "about to run getRecipesBasedOnAllInventory")
-//                lifecycleScope.launch {
-//                    homeViewModel.getRecipesBasedOnAllInventory()
-//                }
-//            }
-//        }
+        binding.generateRecommendationButton.setOnClickListener {
+            if (homeViewModel.inventoryHasItems()) {
+                homeViewModel.getRecipesBasedOnAllInventory()
+            }
+            else {
+                Toast.makeText(context, "your inventory is empty :(", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object: MenuProvider {
@@ -136,6 +137,16 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
             }
         })
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (context != null) {
+            lifecycleScope.launch {
+                homeViewModel.fetchSavedItems(requireContext())
+            }
+        }
     }
 
     override fun onListItemClick(view: View, cocktail: Cocktail) {

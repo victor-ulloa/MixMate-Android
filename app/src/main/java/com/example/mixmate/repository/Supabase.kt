@@ -9,12 +9,17 @@ import com.google.gson.Gson
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
+import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Columns
+import io.github.jan.supabase.postgrest.rpc
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import java.util.UUID
 
 class Supabase {
 
     companion object {
+        const val LOG_TAG = "SUPABASE LOG"
         const val cocktailsTable = "cocktails"
         const val inventoryListTable = "inventoryList"
         const val recipesTable = "recipes"
@@ -22,8 +27,8 @@ class Supabase {
         const val columnName = "name"
         const val columnType = "type"
         const val columnTags = "tags"
-        const val columnIngredients = "ingredients"
-        const val attrInventoryItem = "inventoryItem"
+        const val getCocktailsThatUseItemFunction = "get_cocktails_that_use_item"
+        const val itemIdParameter = "item_id"
 
         val gson = Gson()
         private val supabase = createSupabaseClient(
@@ -39,7 +44,7 @@ class Supabase {
 
         suspend fun getRecipeOfTheDay(): Cocktail {
             // NOTE: to change
-            return getAllCocktails().last()
+            return getAllCocktails().random()
         }
 
         suspend fun getCocktailsByTags(tags: List<Constants.Tags>): List<Cocktail> {
@@ -59,6 +64,14 @@ class Supabase {
             }.decodeList<Cocktail>()
         }
 
+        suspend fun getCocktailById(id: Int): Cocktail {
+            return supabase.from(cocktailsTable).select {
+                filter {
+                    eq(columnId, id)
+                }
+            }.decodeList<Cocktail>().first()
+        }
+
         suspend fun getCocktailsNameContains(text : String) : List<Cocktail>{
             return supabase.from(cocktailsTable).select{
                 filter {
@@ -68,18 +81,13 @@ class Supabase {
         }
 
         suspend fun getCocktailsThatUseItem(item: InventoryItem):List<Cocktail> {
-            val columns = Columns.raw("""
-                *, $recipesTable!inner (
-                    $columnIngredients
-                )""".trimIndent())
+            val data = supabase.postgrest.rpc(getCocktailsThatUseItemFunction,
+                parameters = buildJsonObject {
+                    put(itemIdParameter, item.id.toString())
+                })
+                .decodeList<Cocktail>().sortedBy{ cocktail -> cocktail.name }
 
-            return supabase.from(cocktailsTable).select(
-                columns = columns
-            ) {
-                filter {
-                    eq("$recipesTable.$columnIngredients->0->$attrInventoryItem", gson.toJson(item))
-                }
-            }.decodeList<Cocktail>()
+            return data
         }
 
         suspend fun getInventoryItemsByType(type: Constants.InventoryItemType): List<InventoryItem> {
