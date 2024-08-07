@@ -16,10 +16,6 @@
     <string name="welcome_back">Welcome Back!</string>
     <string name="sign_up">Sign Up</string>
     <string name="log_in">Log In</string>
-
-    <string name="spirit">spirit</string>
-    <string name="bitters">bitters</string>
-    <string name="syrup">syrup</string>
-    <string name="juice">juice</string>
     <string name="recipe_of_the_day">RECIPE OF THE DAY</string>
+    <string name="generate_recommendation">GENERATE RECOMMENDATION</string>
 </resources>

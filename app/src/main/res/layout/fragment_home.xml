@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/recipesListLayout1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -77,14 +77,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="GENERATE RECOMMENDATION" />
+                    android:text="@string/generate_recommendation" />
 
                 <TextView
                     android:id="@+id/generateResultText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="TextView"
+                    android:text=""
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -103,7 +103,7 @@
                     android:id="@+id/recipesListTitle1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text=""
                     android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -128,7 +128,7 @@
                     android:id="@+id/recipesListTitle2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text=""
                     android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
