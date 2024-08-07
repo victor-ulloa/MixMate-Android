@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ParentConstraintLayout"
@@ -8,139 +8,137 @@
     tools:context=".ui.home.HomeFragment">
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ConstraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/featuredRecipeView"
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:src="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/HorizontalScrollView1"
+            <TextView
+                android:id="@+id/RecipeOfTheDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:text="@string/recipe_of_the_day"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/cardView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="spread" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <HorizontalScrollView
-                android:id="@+id/HorizontalScrollView1"
-                android:layout_width="0dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="30dp"
-                android:fillViewport="true"
-                app:layout_constraintBottom_toTopOf="@+id/HorizontalScrollView2"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/generateRecommendationLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/featuredRecipeView">
+                app:layout_constraintTop_toBottomOf="@id/RecipeOfTheDay">
 
-                <LinearLayout
-                    android:id="@+id/horizontalLinearLayout1"
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/featuredRecipeView"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:scaleType="centerCrop"
+                    android:src="@color/white" />
 
-                    <ImageView
-                        android:id="@+id/themedRecipe1"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:layout_weight="1"
-                        android:src="@color/purple_200" />
+                <TextView
+                    android:id="@+id/featuredRecipeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/text_margin"
+                    android:background="@color/black_overlay"
+                    android:gravity="center"
+                    android:text=""
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textColor="@color/white"
+                    android:textSize="22sp" />
 
-                    <ImageView
-                        android:id="@+id/themedRecipe2"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:layout_weight="1"
-                        android:scaleType="centerCrop"
-                        android:src="@color/purple_500" />
+            </androidx.cardview.widget.CardView>
 
-                    <ImageView
-                        android:id="@+id/themedRecipe3"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:layout_weight="1"
-                        android:scaleType="centerCrop"
-                        android:src="@color/purple_700" />
+            <LinearLayout
+                android:id="@+id/generateRecommendationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/recipesListLayout1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView">
 
-                    <ImageView
-                        android:id="@+id/themedRecipe4"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:layout_weight="1"
-                        android:scaleType="centerCrop"
-                        android:src="@color/teal_200" />
-                </LinearLayout>
-            </HorizontalScrollView>
+                <Button
+                    android:id="@+id/generateRecommendationButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/generate_recommendation" />
 
-            <HorizontalScrollView
-                android:id="@+id/HorizontalScrollView2"
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="20dp"
-                android:fillViewport="true"
+                <TextView
+                    android:id="@+id/generateResultText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=""
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/recipesListLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/recipesListLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+                <TextView
+                    android:id="@+id/recipesListTitle1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="16sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recipesListRv1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/fragment_recipe_carousel_item" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/recipesListLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/HorizontalScrollView1">
+                app:layout_constraintTop_toBottomOf="@+id/recipesListLayout1">
 
-                <LinearLayout
-                    android:id="@+id/horizontalLinearLayout2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/recipesListTitle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="16sp" />
 
-                    <ImageView
-                        android:id="@+id/themedRecipe5"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:layout_weight="1"
-                        android:scaleType="centerCrop"
-                        android:src="@color/teal_700" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recipesListRv2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/fragment_recipe_carousel_item" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/themedRecipe6"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:layout_weight="1"
-                        android:scaleType="centerCrop"
-                        android:src="@color/teal_200" />
-
-                    <ImageView
-                        android:id="@+id/themedRecipe7"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:layout_weight="1"
-                        android:scaleType="centerCrop"
-                        android:src="@color/purple_700" />
-
-                    <ImageView
-                        android:id="@+id/themedRecipe8"
-                        android:layout_width="150dp"
-                        android:layout_height="200dp"
-                        android:layout_marginHorizontal="2dp"
-                        android:layout_weight="1"
-                        android:scaleType="centerCrop"
-                        android:src="@color/purple_500" />
-                </LinearLayout>
-            </HorizontalScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

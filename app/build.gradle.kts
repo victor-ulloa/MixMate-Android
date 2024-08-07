@@ -42,8 +42,11 @@ android {
 }
 
 dependencies {
-    val supabase_version = "2.5.1"
-    val ktor_version = "2.3.12"
+    implementation(libs.google.material)
+    implementation(libs.gson)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.androidx.cardview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -57,6 +60,8 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.picasso)
 
+    val supabase_version = "2.5.1"
+    val ktor_version = "2.3.12"
     implementation(platform("io.github.jan-tennert.supabase:bom:$supabase_version"))
     implementation("io.github.jan-tennert.supabase:postgrest-kt")
     implementation("io.ktor:ktor-client-android:$ktor_version")

@@ -1,43 +1,36 @@
-package com.example.mixmate.ui.itemlist
+package com.example.mixmate.ui.editInventory
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.mixmate.databinding.FragmentItemBinding
-import com.example.mixmate.ui.itemlist.placeholder.PlaceholderContent.PlaceholderItem
+import com.example.mixmate.data.InventoryItem
+import com.example.mixmate.databinding.FragmentAddedItemBinding
 
-/**
- * [RecyclerView.Adapter] that can display a [PlaceholderItem].
- * TODO: Replace the implementation with code for your data type.
- */
-class ItemListRecyclerViewAdapter(
-    private val values: List<PlaceholderItem>
-) : RecyclerView.Adapter<ItemListRecyclerViewAdapter.ViewHolder>() {
+class AddedItemListRecyclerViewAdapter(
+    private val values: MutableList<InventoryItem>
+) : RecyclerView.Adapter<AddedItemListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
-            FragmentItemBinding.inflate(
+            FragmentAddedItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        holder.contentView.text = item.name
     }
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: FragmentItemBinding) :
+    inner class ViewHolder(binding: FragmentAddedItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val idView: TextView = binding.id
         val contentView: TextView = binding.itemContent
 
         override fun toString(): String {

@@ -28,7 +28,10 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_inventory, R.id.navigation_recipes, R.id.navigation_sign_up // NOTE: TO CHANGE BETWEEN SIGN UP, LOG IN AND USER DETAIL
+                R.id.navigation_home,
+                R.id.navigation_inventory,
+                R.id.navigation_recipes,
+                R.id.navigation_sign_up // NOTE: TO CHANGE BETWEEN SIGN UP, LOG IN AND USER DETAIL
             )
         )
 
@@ -37,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 _, destination, _ ->
             run {
                 when (destination.id) {
-                    R.id.navigation_edit_inventory,
+                    R.id.navigation_view_inventory,
                     R.id.navigation_recipe_detail,
                     R.id.navigation_log_in, -> navView.visibility = View.GONE
                     else -> navView.visibility = View.VISIBLE

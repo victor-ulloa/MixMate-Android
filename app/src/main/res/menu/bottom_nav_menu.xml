@@ -23,4 +23,9 @@
         android:icon="@drawable/ic_android_black_24dp"
         android:title="@string/title_profile" />
 
+    <item
+        android:id="@+id/navigation_view_inventory"
+        android:title="@string/title_view_inventory"
+        android:visible="false"/>
+
 </menu>

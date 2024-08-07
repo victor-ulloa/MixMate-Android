@@ -1,23 +1,124 @@
 package com.example.mixmate.ui.home
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.mixmate.data.Cocktail
-import com.example.mixmate.repository.CocktailRepository
+import com.example.mixmate.data.Constants
+import com.example.mixmate.data.InventoryItem
+import com.example.mixmate.repository.Supabase
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class HomeViewModel : ViewModel() {
-    val cocktailRepository = CocktailRepository
+class HomeViewModel(val context: Context): ViewModel() {
+    companion object{
+        val LOG_TAG = "HomeViewModel log"
+    }
 
-    val allCocktailsLocal : Array<Cocktail> = arrayOf(
-        Cocktail(2, "Frozen Margarita","Frozen Margarita Description","Frozen Margarita", "https://images.pexels.com/photos/7809757/pexels-photo-7809757.jpeg"),
-        Cocktail(1, "Whiskey Sour","Whiskey Sour Description","Whiskey Sour", "https://images.pexels.com/photos/6542662/pexels-photo-6542662.jpeg"),
-        Cocktail(3, "Vodka Martini","Vodka Martini Description","Vodka Martini", "https://images.pexels.com/photos/4786625/pexels-photo-4786625.jpeg"),
-        Cocktail(4, "Mojito","Mojito Description","Mojito", "https://images.pexels.com/photos/4021983/pexels-photo-4021983.jpeg"),
-        Cocktail(5, "Old-fashioned","Old-fashioned Description","Old-fashioned", "https://images.pexels.com/photos/19252758/pexels-photo-19252758/free-photo-of-whiskey-with-ice-cubes-and-orange-peel-in-lowball-glass.jpeg"),
-        Cocktail(6, "Espresso Martini", "Espresso Martini Description","Espresso Martini", "https://images.pexels.com/photos/15082311/pexels-photo-15082311/free-photo-of-glass-of-espresso-martini-cocktail.jpeg" ),
-        Cocktail(7, "Manhattan", "Manhattan Description", "Manhattan", "https://images.pexels.com/photos/7809770/pexels-photo-7809770.jpeg"),
-        Cocktail(8, "Piña Colada", "Piña Colada Description", "Piña Colada", "https://images.pexels.com/photos/10986577/pexels-photo-10986577.jpeg"),
-        Cocktail(9, "Mango Mojito", "Mango Mojito Description", "Mango Mojito", "https://images.pexels.com/photos/10836605/pexels-photo-10836605.jpeg"),
-        Cocktail(10, "Jalapeno Vodka", "Jalapeno Vodka Description","Jalapeno Vodka","https://images.pexels.com/photos/4631022/pexels-photo-4631022.jpeg"),
-        Cocktail(11,"Polish Honey Vodka", "Polish Honey Vodka Description", "Polish Honey Vodka", "https://images.pexels.com/photos/4631019/pexels-photo-4631019.jpeg")
-    )
+    private val gson = Gson()
+    private val listType = object: TypeToken<List<InventoryItem>>() {}.type
+    private val savedItems: MutableList<InventoryItem> = arrayListOf()
+    fun inventoryHasItems(): Boolean {
+        return savedItems.isNotEmpty()
+    }
+    fun getSavedItems(): MutableList<InventoryItem> {
+        return savedItems
+    }
+
+    val recipeOfTheDay: MutableLiveData<Cocktail> = MutableLiveData()
+
+    init {
+        viewModelScope.launch {
+            recipeOfTheDay.value = Supabase.getRecipeOfTheDay()
+        }
+    }
+
+    val recList1: MutableLiveData<List<Cocktail>> = MutableLiveData(arrayListOf())
+    val listTitle1: MutableLiveData<String> = MutableLiveData("")
+    fun setRecList1(newList: List<Cocktail>) {
+        recList1.value = newList
+    }
+    val recList2: MutableLiveData<List<Cocktail>> = MutableLiveData(arrayListOf())
+    val listTitle2: MutableLiveData<String> = MutableLiveData("")
+    fun setRecList2(newList: List<Cocktail>) {
+        recList2.value = newList
+    }
+
+    fun getRecipesBasedOnAllInventory() {
+        val recList: MutableList<Cocktail> = emptyList<Cocktail>().toMutableList()
+        for (item in savedItems) {
+            viewModelScope.launch {
+                try {
+                    val retrievedList = Supabase.getCocktailsThatUseItem(item)
+                    Log.d(LOG_TAG, "for $item: retrieved $retrievedList")
+                    for (recipe in retrievedList) {
+                        if (!recList.contains(recipe)) {
+                            recList.add(recipe)
+                        }
+                    }
+                    Log.d(LOG_TAG, "$recList")
+                    recList1.value = recList
+                    listTitle1.value = "Based on your inventory"
+
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    suspend fun fetchSavedItems(context: Context) {
+        savedItems.clear()
+        Log.d(LOG_TAG, "enum values: ${enumValues<Constants.InventoryItemType>()}")
+        val keyList = buildKeyList()
+        val preferencesValues = getPreferencesValues(context, keyList)
+
+        for (key in keyList) {
+            val retrievedValue :String = preferencesValues[key.toString()] ?: ""
+            Log.d(LOG_TAG, "$key, $retrievedValue")
+            if (retrievedValue.isNotEmpty()){
+                savedItems.addAll(gson.fromJson(retrievedValue, listType))
+            }
+        }
+    }
+
+    private suspend fun getPreferencesValues(context: Context, keys: List<Preferences. Key<String>>): Map<String, String?> {
+        val preferencesFlow = context.dataStore.data.map { preferences ->
+            keys.associate { key ->
+                key.name to preferences[key]
+            }
+        }
+        return preferencesFlow.first()
+    }
+
+    private fun buildKeyList(): List<Preferences.Key<String>> {
+        val list: MutableList<Preferences.Key<String>> = arrayListOf()
+        for (type in enumValues<Constants.InventoryItemType>()) {
+            list.add(stringPreferencesKey("${Constants.ITEMS}_${type.name}"))
+        }
+        return list
+    }
+}
+
+class HomeViewModelFactory(private val context: Context): ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return HomeViewModel(context) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

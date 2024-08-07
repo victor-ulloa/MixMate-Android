@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".ui.profile.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/appNameTextView"
         android:layout_width="match_parent"
