@@ -5,26 +5,10 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.MixMate.AppWidgetContainer">
 
-    <FrameLayout
-        android:id="@+id/RODWidgetLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/RODWidgetImageView"
-            android:layout_width="300dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            app:srcCompat="@color/light_blue_200" />
-
-        <TextView
-            android:id="@+id/RODWidgetTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/recipe_of_the_day" />
-    </FrameLayout>
+    <GridView
+        android:id="@+id/widget_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/appwidget_text"

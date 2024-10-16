@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViews
-import androidx.core.net.toUri
-import com.example.mixmate.data.Cocktail
 
 /**
  * Implementation of App Widget functionality.
@@ -40,15 +38,16 @@ internal fun updateAppWidget(
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
+    Log.d("Widget test log", "updateAppWidget function")
 
     // Construct the RemoteViews object
-    val views = RemoteViews(context.packageName, R.layout.recipe_of_the_day_widget)
+    val views = RemoteViews(context.packageName, R.layout.recipe_of_the_day_widget).apply {
+        setRemoteAdapter(R.id.widget_view, Intent(context, AppWidgetService::class.java))
+    }
 
     //TODO: LAUNCH MAIN ACTIVITY WHEN CLICKED
 
-    views.setRemoteAdapter(R.id.RODWidgetLayout, Intent(context, AppWidgetService::class.java))
-
-    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.RODWidgetLayout)
+    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_view)
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
