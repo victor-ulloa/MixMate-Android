@@ -1,5 +1,6 @@
 package com.example.mixmate
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -19,8 +20,28 @@ class RecipeOfTheDayWidget : AppWidgetProvider() {
     ) {
         Log.d(LOG_TAG, "RecipeOfTheDayWidget on update")
         // There may be multiple widgets active, so update all of them
-        for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId)
+        appWidgetIds.forEach { appWidgetId ->
+            val pendingIntent: PendingIntent = PendingIntent.getActivity(
+                context,
+                /* requestCode = */  0,
+                /* intent = */ Intent(context, MainActivity::class.java),
+                /* flags = */ PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            // Get the layout for the widget and attach an onClick listener to
+            // the button.
+            val views: RemoteViews = RemoteViews(
+                context.packageName,
+                R.layout.recipe_of_the_day_widget
+            ).apply {
+                setOnClickPendingIntent(R.id.RODFrameLayout, pendingIntent)
+            }
+
+            views.setImageViewResource(R.id.RODWidgetImageView, R.drawable.preview_image)
+
+            // Tell the AppWidgetManager to perform an update on the current
+            // widget.
+            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
     }
 
@@ -31,24 +52,4 @@ class RecipeOfTheDayWidget : AppWidgetProvider() {
     override fun onDisabled(context: Context) {
         Log.d(LOG_TAG, "RecipeOfTheDayWidget on disabled")
     }
-}
-
-internal fun updateAppWidget(
-    context: Context,
-    appWidgetManager: AppWidgetManager,
-    appWidgetId: Int
-) {
-    Log.d("Widget test log", "updateAppWidget function")
-
-    // Construct the RemoteViews object
-    val views = RemoteViews(context.packageName, R.layout.recipe_of_the_day_widget).apply {
-        setRemoteAdapter(R.id.widget_view, Intent(context, AppWidgetService::class.java))
-    }
-
-    //TODO: LAUNCH MAIN ACTIVITY WHEN CLICKED
-
-    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_view)
-
-    // Instruct the widget manager to update the widget
-    appWidgetManager.updateAppWidget(appWidgetId, views)
 }

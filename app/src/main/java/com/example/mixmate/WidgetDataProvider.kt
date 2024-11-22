@@ -46,22 +46,23 @@ class WidgetDataProvider(val context: Context, val intent: Intent?) : RemoteView
     }
 
     override fun getViewAt(p0: Int): RemoteViews {
-        val views = RemoteViews(context.packageName, R.layout.widget_item)
-        views.setImageViewResource(R.id.RODWidgetImageView,R.drawable.preview_img)
-        try {
-            views.setTextViewText(R.id.RODWidgetTextView, rod!!.name)
-            var image: Bitmap? = null
-            runBlocking {
-                val `in` = java.net.URL(rod!!.imageURL).openStream()
-                image = BitmapFactory.decodeStream(`in`)
-                views.setImageViewBitmap(R.id.RODWidgetImageView,image)
-            }
-        }
-        catch (e: Exception) {
-            views.setTextViewText(R.id.RODWidgetTextView, "pulling recipe of the day failed")
-        }
+//        val views = RemoteViews(context.packageName, R.layout.widget_item)
+//        views.setImageViewResource(R.id.RODWidgetImageView,R.drawable.preview_img)
+//        try {
+//            views.setTextViewText(R.id.RODWidgetTextView, rod!!.name)
+//            var image: Bitmap? = null
+//            runBlocking {
+//                val `in` = java.net.URL(rod!!.imageURL).openStream()
+//                image = BitmapFactory.decodeStream(`in`)
+//                views.setImageViewBitmap(R.id.RODWidgetImageView,image)
+//            }
+//        }
+//        catch (e: Exception) {
+//            views.setTextViewText(R.id.RODWidgetTextView, "pulling recipe of the day failed")
+//        }
 
-        return views
+//        return views
+        return RemoteViews(context.packageName, R.layout.recipe_of_the_day_widget)
     }
 
     override fun getLoadingView(): RemoteViews? {
