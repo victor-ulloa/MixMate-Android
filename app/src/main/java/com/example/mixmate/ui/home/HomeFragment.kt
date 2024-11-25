@@ -1,6 +1,12 @@
 package com.example.mixmate.ui.home
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +16,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -23,17 +32,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
 import com.example.mixmate.R
 import com.example.mixmate.data.Cocktail
 import com.example.mixmate.data.Constants
-import com.example.mixmate.data.InventoryItem
 import com.example.mixmate.databinding.FragmentHomeBinding
 import com.example.mixmate.listeners.RecipeListOnClickListener
 import com.example.mixmate.repository.Supabase
-import com.example.mixmate.ui.recipes.RecipeRecyclerViewAdapter
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constants.SAVED_ITEMS)
 
@@ -42,6 +49,8 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
         val LOG_TAG = "HomeFragment log"
     }
 
+    private val CHANNEL_ID = "MIXMATE_CHANNEL"
+    private var NOTIFICATION_ID = 0
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -141,10 +150,31 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
 
     override fun onResume() {
         super.onResume()
+        Log.i(LOG_TAG, "resumed")
+
+        val builder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+            .setSmallIcon(R.drawable.notification_icon)
+            .setContentTitle("Reminder: Your inventory is empty!")
+            .setContentText("Remember to add items to your inventory before trying to generate recommendations!")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        createNotificationChannel()
 
         if (context != null) {
             lifecycleScope.launch {
                 homeViewModel.fetchSavedItems(requireContext())
+            }
+            if (!homeViewModel.inventoryHasItems()) {
+                Log.i(LOG_TAG, "no inventory items found")
+                with(NotificationManagerCompat.from(requireContext())) {
+                    if (ActivityCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        return@with
+                    }
+                    notify(++NOTIFICATION_ID, builder.build())
+                }
             }
         }
     }
@@ -162,5 +192,22 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is not in the Support Library.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system.
+            val notificationManager: NotificationManager =
+                requireActivity().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 }

@@ -16,12 +16,11 @@
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_recipes" />
 
-    <!--note: will need to switch between sign up, log in and user detail -->
-    <!-- automatic conditional navigation: https://developer.android.com/guide/navigation/use-graph/conditional -->
     <item
         android:id="@+id/navigation_sign_up"
         android:icon="@drawable/ic_android_black_24dp"
-        android:title="@string/title_profile" />
+        android:title="@string/title_profile"
+        android:visible="false" />
 
     <item
         android:id="@+id/navigation_view_inventory"
