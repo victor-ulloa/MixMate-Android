@@ -101,8 +101,6 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
             lifecycleScope.launch {
                 Picasso.get()
                     .load(value.imageURL)
-                    .resize(0,200)
-                    .centerCrop()
                     .into(binding.featuredRecipeView)
             }
             binding.featuredRecipeText.text = value.name
