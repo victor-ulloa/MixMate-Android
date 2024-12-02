@@ -160,18 +160,18 @@ class HomeFragment : Fragment(), RecipeListOnClickListener {
         if (context != null) {
             lifecycleScope.launch {
                 homeViewModel.fetchSavedItems(requireContext())
-            }
-            if (!homeViewModel.inventoryHasItems()) {
-                Log.i(LOG_TAG, "no inventory items found")
-                with(NotificationManagerCompat.from(requireContext())) {
-                    if (ActivityCompat.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.POST_NOTIFICATIONS
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        return@with
+                if (!homeViewModel.inventoryHasItems()) {
+                    Log.i(LOG_TAG, "no inventory items found")
+                    with(NotificationManagerCompat.from(requireContext())) {
+                        if (ActivityCompat.checkSelfPermission(
+                                requireContext(),
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
+                            return@with
+                        }
+                        notify(++NOTIFICATION_ID, builder.build())
                     }
-                    notify(++NOTIFICATION_ID, builder.build())
                 }
             }
         }

@@ -42,9 +42,8 @@ class Supabase {
             return supabase.from(cocktailsTable).select().decodeList<Cocktail>().sortedBy { cocktail -> cocktail.name }
         }
 
-        suspend fun getRecipeOfTheDay(): Cocktail {
-            // NOTE: to change
-            return getAllCocktails().random()
+        suspend fun getRecipesOfTheDay(): List<Cocktail> {
+            return getCocktailsByTags(listOf(Constants.Tags.recipeOfTheDay))
         }
 
         suspend fun getCocktailsByTags(tags: List<Constants.Tags>): List<Cocktail> {
