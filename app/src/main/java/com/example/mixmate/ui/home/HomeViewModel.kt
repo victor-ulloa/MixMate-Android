@@ -41,7 +41,7 @@ class HomeViewModel(val context: Context): ViewModel() {
 
     init {
         viewModelScope.launch {
-            recipeOfTheDay.value = Supabase.getRecipeOfTheDay()
+            recipeOfTheDay.value = Supabase.getRecipesOfTheDay()[0]
         }
     }
 

@@ -20,29 +20,30 @@
                 android:id="@+id/RecipeOfTheDay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
                 android:paddingHorizontal="10dp"
                 android:text="@string/recipe_of_the_day"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@id/cardView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="@color/design_default_color_primary"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/cardView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
                 app:cardCornerRadius="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/generateRecommendationLayout"
+                app:layout_constraintBottom_toTopOf="@+id/materialDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/RecipeOfTheDay">
+                app:layout_constraintTop_toBottomOf="@+id/RecipeOfTheDay">
 
                 <ImageView
                     android:id="@+id/featuredRecipeView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="250dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     android:src="@color/white" />
 
@@ -61,6 +62,19 @@
 
             </androidx.cardview.widget.CardView>
 
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/materialDivider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                app:dividerInsetEnd="16dp"
+                app:dividerInsetStart="16dp"
+                app:dividerThickness="2dp"
+                app:layout_constraintBottom_toTopOf="@id/generateRecommendationLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
             <LinearLayout
                 android:id="@+id/generateRecommendationLayout"
                 android:layout_width="match_parent"
@@ -68,12 +82,11 @@
                 android:orientation="vertical"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/recipesListLayout1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView">
+                app:layout_constraintTop_toBottomOf="@+id/materialDivider">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/generateRecommendationButton"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -95,9 +108,7 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/recipesListLayout2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView">
+                app:layout_constraintTop_toBottomOf="@+id/generateRecommendationLayout">
 
                 <TextView
                     android:id="@+id/recipesListTitle1"
@@ -120,8 +131,6 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recipesListLayout1">
 
                 <TextView

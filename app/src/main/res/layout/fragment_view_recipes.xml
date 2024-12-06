@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:dividerPadding="5dp"
     android:orientation="vertical"
     tools:context=".ui.recipes.ViewRecipesFragment">
 
@@ -11,7 +12,20 @@
         android:id="@+id/tag_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         tools:listitem="@layout/tag_rv_list_item" />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggle_button_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"></com.google.android.material.button.MaterialButtonToggleGroup>
+    </HorizontalScrollView>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/recipe_recycler_view"

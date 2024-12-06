@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mixmate.R
 import com.example.mixmate.data.Constants
 import com.example.mixmate.databinding.FragmentViewRecipesBinding
 import com.example.mixmate.listeners.TagOnClickListener
-import io.ktor.utils.io.concurrent.shared
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButtonToggleGroup
 
 class ViewRecipesFragment : Fragment(), TagOnClickListener {
     companion object{
@@ -44,6 +44,26 @@ class ViewRecipesFragment : Fragment(), TagOnClickListener {
                 RecyclerView.HORIZONTAL,
                 false)
             adapter = TagsRecyclerViewAdapter(listener)
+        }
+
+        // tags
+        val tagsButtonToggleGroup : MaterialButtonToggleGroup = binding.toggleButtonGroup
+        for (enumValue in enumValues<Constants.Tags>()) {
+            val buttonView = MaterialButton(requireContext(), null, com.google.android.material.R.attr.materialButtonOutlinedStyle)
+            buttonView.tag = enumValue.toString()
+            buttonView.text = enumValue.toString()
+            tagsButtonToggleGroup.addView(buttonView)
+        }
+            tagsButtonToggleGroup.addOnButtonCheckedListener{ _, checkedId, isChecked ->
+                val button = root.findViewById<MaterialButton>(checkedId)
+                val buttonText = button.text.toString()
+                val typeEnum = Constants.Tags.entries.find {it.toString() == buttonText}
+                if(isChecked){
+                    sharedModel.addTag(typeEnum!!)
+                }
+                else {
+                    sharedModel.removeTag(typeEnum!!)
+                }
         }
 
         return root

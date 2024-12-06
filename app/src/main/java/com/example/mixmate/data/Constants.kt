@@ -58,7 +58,7 @@ class Constants {
                 return "dairy-free"
             }
         }, fruits, spices, summer, coffee, classic, elegant, smooth, sophisticated, spicy, herbal
-        , juicy, vegan, tropical, frozen
+        , juicy, vegan, tropical, frozen, recipeOfTheDay
     }
 
     companion object {
