@@ -5,29 +5,18 @@
     android:orientation="vertical"
     android:theme="@style/Theme.MixMate.AppWidgetContainer">
 
-    <FrameLayout
-        android:id="@+id/RODFrameLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <StackView
+        android:id="@+id/widgetStackView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </StackView>
 
-        <ImageView
-            android:id="@+id/RODWidgetImageView"
-            android:layout_width="300dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            app:srcCompat="@color/light_blue_200" />
+    <ImageView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/preview_image">
 
-        <TextView
-            android:id="@+id/RODWidgetTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_marginVertical="10dp"
-            android:fontFamily="sans-serif-smallcaps"
-            android:text="MixMate"
-            android:textColor="@color/black"
-            android:textSize="30sp" />
-    </FrameLayout>
+    </ImageView>
 
 </LinearLayout>
